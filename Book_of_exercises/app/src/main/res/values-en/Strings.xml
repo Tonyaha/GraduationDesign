@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BOE</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+
+    <string name="message">MESSAGE</string>
+    <string name="me">ME</string>
+    <string name="collect">COLLECT</string>
+    <string name="interest">SATIN</string>
+    <string name="contact">CONTACT</string>
+
+    <string name="login_txt_inputpwd">    Enter password</string>
+    <string name="login_txt_inputname">    Enter account or email or phone number</string>
+    <string name="account">ACCOUNT :</string>
+    <string name="password">PASSWORD:</string>
+    <string name="login_txt_qustion">Do you encounter problems with landing?</string>
+    <string name="user_class">CLASS:</string>
+    <string name="user_school">SCHOOL:</string>
+    <string name="user_phone">PHONE:</string>
+    <string name="user_occupation">OCCUPATION:</string>
+    <string name="teacher">Teacher</string>
+    <string name="student">Student</string>
+    <string name="register_txt_user">Enter phone/email/character </string>
+    <string name="register_txt_pwd">Made up of letters,numbers,characters,etc.</string>
+    <string name="register_txt_class">Enter your class</string>
+    <string name="register_txt_school">Enter your school</string>
+    <string name="register_txt_phone">Enter your phone number</string>
+    <string name="not_empty">In addition to the phone, each item is required !!</string>
+    <string name="login_user_not_empty">The account or password can not be empty</string>
+
+    <string name="connect_to_server">Failed to connect to the server, or the server has been shut down</string>
+    <string name="internet_closed">Please open the network first</string>
+
+    <string name="login_success">Login was successful</string>
+    <string name="login_fail">Failure of landing, failure of server</string>
+    <string name="register_fail">Failed registration, failure of the server</string>
+    <string name="register_success">Register was successful</string>
+    <string name="register_exist">Account has been registered</string>
+    <string name="register_user_err">An account must be a phone number, or a string that can contain numbers and underlines at the beginning of a letter</string>
+    <string name="register_user_pwd_err">A password contains a special symbol, or the length is less than 6</string>
+    <string name="login_account_err">Account or password error</string>
+</resources>
