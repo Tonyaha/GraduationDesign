@@ -1,0 +1,5 @@
+﻿*.js linguist-language=Python+Java
+*.css linguist-language=Python+Java
+*.html linguist-language=Python+Java
+*.java linguist-language=Python+Java
+*.python linguist-language=Python+Java
