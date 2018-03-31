@@ -20,6 +20,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private int xmlItem; //item文件 .xml
     private int textViewId; //item中显示文字的 text
     private int imgViewId; //item 中显示图片的imageView
+
+    private int tvMsgID;
     /**
      * 事件回调监听
      */
@@ -30,6 +32,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         this.xmlItem = xmlItemId;
         this.imgViewId = imgId;
         this.textViewId = textId;
+    }
+    public MyAdapter(ArrayList<String> data,int xmlItemId,int textId,int imgId,int tvMsgId){
+        this.mData = data;
+        this.xmlItem = xmlItemId;
+        this.imgViewId = imgId;
+        this.textViewId = textId;
+        this.tvMsgID = tvMsgId;
     }
     public void updateData(ArrayList<String> data){
         this.mData = data;

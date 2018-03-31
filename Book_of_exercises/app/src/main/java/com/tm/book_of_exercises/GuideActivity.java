@@ -7,7 +7,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
-import com.tm.book_of_exercises.main.MyMainActivity;
 import com.tm.book_of_exercises.main.UserLogin;
 import com.tm.book_of_exercises.main.UserRegister;
 

@@ -17,6 +17,7 @@ import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.constant.Constant;
 import com.tm.book_of_exercises.http.RetrofitBuilder;
 import com.tm.book_of_exercises.main.UserLogin;
+import com.tm.book_of_exercises.main.otherPage.TasksActivity;
 import com.tm.book_of_exercises.main.otherPage.UserInfo;
 
 import org.json.JSONException;
@@ -68,6 +69,7 @@ public class MeFragment extends Fragment {
         account.setOnClickListener(myOnClickListener);
         exitLinearLayout.setOnClickListener(myOnClickListener);
         linearLayout_.setOnClickListener(myOnClickListener);
+        allTaskLinearLayout.setOnClickListener(myOnClickListener);
         return view;//super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -147,6 +149,9 @@ public class MeFragment extends Fragment {
                     startActivity(intent1);
                     break;
                 case R.id.all_tasks:
+                    Intent intent2 = new Intent(getActivity(), TasksActivity.class);
+                    startActivity(intent2);
+                    //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                     break;
             }
         }

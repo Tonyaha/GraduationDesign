@@ -8,9 +8,106 @@
     android:orientation="vertical"
     tools:context="com.tm.book_of_exercises.MainActivity">
 
-    <FrameLayout
+    <include
+        layout="@layout/view_layout_title"
+        android:id="@+id/main_activity_title"/>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/framLayout"/>
+        android:orientation="vertical"
+        android:weightSum="21"
+        android:paddingTop="50dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="19"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#bebebe"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="5"
+                android:orientation="horizontal"
+                android:id="@+id/mymain_radioGroup"
+                android:paddingTop="4dp">
+
+                <RadioButton
+                    android:id="@+id/message"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="@string/message"
+                    android:textSize="12dp"
+                    android:textColor="@drawable/trade_bottom_text"
+                    android:drawableTop="@drawable/trade_bottom_msg" />
+
+                <RadioButton
+                    android:id="@+id/contact"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/contact"
+                    android:textSize="12dp"
+                    android:textColor="@drawable/trade_bottom_text"
+                    android:drawableTop="@drawable/trade_bottom_contact"/>
+
+                <RadioButton
+                    android:id="@+id/add"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/add"
+                    android:textSize="12dp"
+                    android:textColor="@drawable/trade_bottom_text"
+                    android:drawableTop="@drawable/trade_bottom_add"/>
+
+                <RadioButton
+                    android:id="@+id/collect"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/collect"
+                    android:textSize="12dp"
+                    android:textColor="@drawable/trade_bottom_text"
+                    android:drawableTop="@drawable/trade_bottom_collect"/>
+
+
+                <RadioButton
+                    android:id="@+id/me"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/me"
+                    android:textSize="12dp"
+                    android:textColor="@drawable/trade_bottom_text"
+                    android:drawableTop="@drawable/trade_bottom_mine"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

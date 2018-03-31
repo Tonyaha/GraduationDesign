@@ -6,7 +6,7 @@
     <string name="message">信息</string>
     <string name="me">我</string>
     <string name="collect">收藏</string>
-    <string name="interest">段子</string>
+    <string name="add">添加</string>
     <string name="contact">通讯录</string>
 
     <string name="login_txt_inputpwd">输入密码</string>
@@ -28,7 +28,7 @@
     <string name="not_empty">除电话外，每一项为必填 ！！</string>
     <string name="login_user_not_empty">账号或密码不能为空</string>
 
-    <string name="connect_to_server">与服务器连接失败，或服务器已关闭</string>
+    <string name="connect_to_server">与服务器连接失败，或服务器已关闭/服务器与数据库未连接</string>
     <string name="internet_closed">请先打开网络</string>
 
     <string name="login_success">登陆成功</string>

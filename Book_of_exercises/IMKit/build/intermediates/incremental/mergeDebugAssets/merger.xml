@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\assets"/><source path="F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\debug\assets"/></dataSet></merger>

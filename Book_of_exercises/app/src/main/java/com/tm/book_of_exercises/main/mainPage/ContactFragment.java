@@ -15,11 +15,11 @@ import android.widget.Toast;
 import com.tm.book_of_exercises.MainActivity;
 import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.adapter.MyAdapter;
+import com.tm.book_of_exercises.constant.Constant;
 import com.tm.book_of_exercises.main.otherPage.SearchActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import static com.tm.book_of_exercises.constant.Constant.data;
 
 /**
  * Created by T M on 2018/3/14.
@@ -28,7 +28,7 @@ import static com.tm.book_of_exercises.constant.Constant.data;
 public class ContactFragment extends Fragment {
     //@ViewInject(R.id.contact_list)
     private RecyclerView mRecyclerView;
-    public static MyAdapter mAdapter;
+    public MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     //@ViewInject(R.id.contact_add_friend)
@@ -38,15 +38,16 @@ public class ContactFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact,container,false);
+
+        initData();  // 初始化在前面，不然提示 E/RecyclerView: No adapter attached; skipping layout
         //AnnotateUtils.injectViews(getActivity());
         addFriendLinearLayout = view.findViewById(R.id.contact_add_friend);
-
         mRecyclerView = view.findViewById(R.id.contactRecyclerView);
         mRecyclerView.setLayoutManager(mLayoutManager); // 设置布局管理器
         mRecyclerView.setAdapter(mAdapter); // 设置adapter
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());  // 设置Item添加和移除的动画
         //mRecyclerView.addItemDecoration(mDividerItemDecoration); // 设置Item之间间隔样式
-        initData();
+
         //initView();
         addFriendLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +65,7 @@ public class ContactFragment extends Fragment {
 
     private void initData() {
         mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        mAdapter = new MyAdapter(data,R.layout.item_contact,R.id.oneContact,R.id.oneContactImg);
+        mAdapter = new MyAdapter(MainActivity.data,R.layout.item_contact,R.id.oneContact,R.id.oneContactImg);
 
         mAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override

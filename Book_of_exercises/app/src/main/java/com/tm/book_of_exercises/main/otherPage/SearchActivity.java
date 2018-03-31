@@ -25,8 +25,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.rong.imkit.RongIM;
+import io.rong.message.ContactNotificationMessage;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,6 +58,7 @@ public class SearchActivity extends AppCompatActivity {
     private HashMap<String,Object> map = new HashMap<>();
 
     private String name = "";
+    private JSONObject jsonObject;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,12 +149,6 @@ public class SearchActivity extends AppCompatActivity {
         Constant constant = new Constant();
         map.put("username", username);
         map.put("searchName",editText.getText().toString());
-//        if(!"".equals(name)){
-//            map.put("searchName",name);
-//        }else {
-//            map.put("searchName",editText.getText().toString());
-//        }
-
         RetrofitBuilder retrofitBuilder = new RetrofitBuilder(constant.BaseUrl + "/api/search/");
         retrofitBuilder.isConnected(this);
         retrofitBuilder.params(map);
@@ -160,7 +158,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    jsonObject = new JSONObject(response.body().string());
                     resultCode = jsonObject.getString("code");
                     if("200".equals(resultCode)){
                         linearLayout_search.setVisibility(View.VISIBLE);
@@ -216,8 +214,22 @@ public class SearchActivity extends AppCompatActivity {
                     searchFriend();
                     break;
                 case R.id.friendSend:
+                    if (RongIM.getInstance()!=null){
+                        try {
+                            RongIM.getInstance().startPrivateChat(SearchActivity.this,jsonObject.getString("username"),tv_remark.getText().toString());
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_in);
+                            finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 case R.id.friendAdd:
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add("Request");
+                    list.add(Constant.username);
+                    list.add(editText.getText().toString());
+                    list.add("我是"+Constant.username+",能加一下好友吗？");
                     break;
             }
         }
@@ -237,7 +249,6 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    System.out.println("////////" + response.body().string());
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     resultCode = jsonObject.getString("code");
                     if("200".equals(resultCode)) {
@@ -256,7 +267,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Toast.makeText(SearchActivity.this, getBaseContext().getResources().getText(R.string.connect_to_server), Toast.LENGTH_LONG).show();
-                System.out.println(throwable.getMessage());
+                //System.out.println(throwable.getMessage());
             }
         });
     }
@@ -264,9 +275,9 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            System.out.println("按下了back键   onKeyDown()");
+            //System.out.println("按下了back键   onKeyDown()");
             //new MeFragment().query(accountTV.getText().toString());
-            finish();
+            this.finish();
             return false;
         }else {
             return super.onKeyDown(keyCode, event);

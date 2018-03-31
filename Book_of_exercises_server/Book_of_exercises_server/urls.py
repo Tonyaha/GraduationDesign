@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^login/$', login, name="login"),
     url(r'^userInfo/$', queryInfo, name="userInfo"),
     url(r'^api/search/$',search,name='userSearch'),
+    url(r'^api/userCollect/$',tasks,name='collect')
 ]

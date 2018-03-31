@@ -5,6 +5,7 @@ android {
     defaultConfig {
         applicationId "com.tm.book_of_exercises"
         minSdkVersion 15
+        maxSdkVersion 27
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -49,4 +50,6 @@ dependencies {
 
     //替换ListView
     compile 'com.android.support:recyclerview-v7:26.1.0'
+
+    compile project (':IMKit')
 }
