@@ -125,7 +125,7 @@ ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\Andr
 		ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:47:13-49
 	android:name
 		ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:46:13-67
-intent-filter#android.intent.category.DEFAULT+io.rong.imkit.intent.action.webview
+intent-filter#action:name:io.rong.imkit.intent.action.webview+category:name:android.intent.category.DEFAULT
 ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:48:13-51:29
 action#io.rong.imkit.intent.action.webview
 ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:49:17-78
@@ -149,7 +149,7 @@ ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\Andr
 		ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:61:13-71
 	android:name
 		ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:60:13-71
-intent-filter#android.intent.category.DEFAULT+io.rong.imkit.intent.action.picturepagerview
+intent-filter#action:name:io.rong.imkit.intent.action.picturepagerview+category:name:android.intent.category.DEFAULT
 ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:62:13-65:29
 action#io.rong.imkit.intent.action.picturepagerview
 ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:63:17-87
@@ -175,7 +175,7 @@ activity#io.rong.imkit.activity.FilePreviewActivity
 ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:74:9-79:20
 	android:name
 		ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:74:19-76
-intent-filter#android.intent.category.DEFAULT+io.rong.imkit.intent.action.openfile
+intent-filter#action:name:io.rong.imkit.intent.action.openfile+category:name:android.intent.category.DEFAULT
 ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:75:9-78:25
 action#io.rong.imkit.intent.action.openfile
 ADDED from F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\AndroidManifest.xml:76:13-75

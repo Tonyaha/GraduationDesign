@@ -1,18 +1,13 @@
 package com.tm.book_of_exercises;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
-import com.tm.book_of_exercises.constant.Constant;
 import com.tm.book_of_exercises.main.UserLogin;
 
-import io.rong.imkit.RongIM;
 
 
 /**

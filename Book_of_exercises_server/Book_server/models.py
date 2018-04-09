@@ -23,12 +23,13 @@ class User(Document):
     user_class = StringField(default=None)
     phone = StringField(default=None)
     school = StringField(required=True)
-    tasks_collect = ListField(default=None)
+    tasks_collect = ListField(DictField(required=None),default=None)
     list_of_friends = ListField(DictField(required=None),default=None)
     token_RongYun = StringField(default=None)
 
 class Tasks(Document):
     taskId = IntField(required=True)
+    byId = StringField(required=None)
     context = StringField(default=None)
     contextImg = StringField(default=None)
 

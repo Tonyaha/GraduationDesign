@@ -68,13 +68,13 @@ def friendShip():
         print(rep)
     except requests.RequestException as e:
         print(">>>>>>>FriendShip<<<<<<<",e)
-
 def test():
-    x = '问他突然听到让我感到个人和人家好地方实施的各色让他为人液体角色瓦夫为大师傅似的挥金如土鬼地方鬼地方按时发送的房子是电子分色规定阿三的知识点v真实的'
-    task = Tasks(taskId = 4,context = x.encode('utf-8'))
+    task = Tasks(context = '',taskId = 7 )
     task.save()
+
+
 if __name__ == '__main__':
-    # token = ObtainToken('abcjhg','ABC','http://wmimg.sc115.com/tx/new/pic/0414/16044cga2r4dh2v.jpg')
-    # token.getRongToken()
+    token = ObtainToken('aaa','ABC','http://wmimg.sc115.com/tx/new/pic/0414/16044cga2r4dh2v.jpg')
+    token.getRongToken()
     #friendShip()
-    test()
+    #test()

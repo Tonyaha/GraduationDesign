@@ -70,14 +70,15 @@
             android:clickable="true"
             android:textSize="15dp" />
 
+        <!--android:adjustViewBounds="true"(是否保持宽高比)必须与MaxHeight一起使用才能有效-->
         <ImageView
             android:id="@+id/all_tasks_img"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
             android:clickable="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/start" />
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
     </LinearLayout>
 </LinearLayout>

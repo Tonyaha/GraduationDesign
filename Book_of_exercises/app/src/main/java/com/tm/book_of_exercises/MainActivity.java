@@ -1,12 +1,11 @@
 package com.tm.book_of_exercises;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -16,14 +15,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.tm.book_of_exercises.chat.Friend;
 import com.tm.book_of_exercises.constant.Constant;
 import com.tm.book_of_exercises.http.RetrofitBuilder;
+import com.tm.book_of_exercises.main.mainPage.AddFragment;
 import com.tm.book_of_exercises.main.mainPage.CollectFragment;
 import com.tm.book_of_exercises.main.mainPage.ContactFragment;
-import com.tm.book_of_exercises.main.mainPage.AddFragment;
 import com.tm.book_of_exercises.main.mainPage.MeFragment;
 import com.tm.book_of_exercises.main.otherPage.SearchActivity;
+import com.tm.book_of_exercises.myDialog.AlertDiolog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,10 +47,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.tm.book_of_exercises.constant.Constant.*;
+import static com.tm.book_of_exercises.constant.Constant.username;
 
-public class MainActivity extends FragmentActivity implements RongIM.UserInfoProvider{
+public class MainActivity extends FragmentActivity implements RongIM.UserInfoProvider {
     protected static final String TAG = "MainActivity";
+    private long firstTime = 0;
+    private boolean hasGotToken = false;
+    private AlertDialog.Builder alertDialog;
 
     private HashMap<String, Object> map = new HashMap<>();
     public static JSONObject jsonObject;
@@ -107,13 +114,39 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
         initViewPage();
         initMenuItem();
 
+        initAccessToken();; //百度云orc识别初始化
+    }
+
+    private void initAccessToken() {
+        OCR.getInstance().initAccessToken(new OnResultListener<AccessToken>() {
+            @Override
+            public void onResult(AccessToken accessToken) {
+                String token = accessToken.getAccessToken();
+                //System.out.println("////////"+token);
+                hasGotToken = true;
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                error.printStackTrace();
+                AlertDiolog diolog = new AlertDiolog(MainActivity.this,"licence方式获取token失败",error.getMessage());
+                diolog.alertText();
+            }
+        }, getApplicationContext());
+    }
+
+    private boolean checkTokenStatus() {
+        if (!hasGotToken) {
+            Toast.makeText(getApplicationContext(), "token还未成功获取", Toast.LENGTH_LONG).show();
+        }
+        return hasGotToken;
     }
 
     // 融云信息提供...
     private void queryFriend() {
         RetrofitBuilder retrofitBuilder = new RetrofitBuilder(new Constant().BaseUrl + "/userInfo/");
         retrofitBuilder.isConnected(this);
-        retrofitBuilder.params("action","friendship");
+        retrofitBuilder.params("action", "friendship");
         retrofitBuilder.get();
         Call<ResponseBody> call = retrofitBuilder.getCall();
         call.enqueue(new Callback<ResponseBody>() {
@@ -122,14 +155,14 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
                 try {
                     JSONObject jsonObject1 = new JSONObject(response.body().string());
                     String resultCode = jsonObject1.getString("code");
-                    if("200".equals(resultCode)){
+                    if ("200".equals(resultCode)) {
                         userIdList = new ArrayList<Friend>();
                         JSONArray jsonArray = jsonObject1.getJSONArray("list");
-                        for(int i=0;i<jsonArray.length();i++){
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jb = jsonArray.getJSONObject(i);
-                            userIdList.add(new Friend(jb.getString("username"),jb.getString("nickname"),Constant.uri_admin));
+                            userIdList.add(new Friend(jb.getString("username"), jb.getString("nickname"), Uri.parse(jb.getString("icon"))));
                         }
-                        RongIM.setUserInfoProvider(MainActivity.this,true);
+                        RongIM.setUserInfoProvider(MainActivity.this, true);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -151,6 +184,7 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
             }
         });
     }
+
     @Override
     public UserInfo getUserInfo(String s) {
         for (Friend i : userIdList) {
@@ -159,8 +193,6 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
                 return new UserInfo(i.getUserId(), i.getName(), Uri.parse(String.valueOf(i.getPortraitUri())));
             }
         }
-
-
         Log.e(TAG, "UserId is : " + s);
         return null;
     }
@@ -192,44 +224,61 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
         startActivity(intent);
     }
 
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+//            System.out.println("按下了back键   onKeyDown()");
+//            final AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
+//            alterDialog.setMessage("确定退出应用？");
+//            alterDialog.setCancelable(true);
+//            alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    if(RongIM.getInstance() != null){
+//                        RongIM.getInstance().disconnect();
+//
+//                        Intent intent = new Intent(MainActivity.this, StartAppActivity.class);
+//                        intent.putExtra(StartAppActivity.EXIST, true);
+//                        startActivity(intent);
+//                        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                    }
+//                }
+//            });
+//            alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    dialogInterface.cancel();
+//                }
+//            });
+//            alterDialog.show();
+//
+//            return false;
+//        } else {
+//            return super.onKeyDown(keyCode, event);
+//        }
+//    }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            System.out.println("按下了back键   onKeyDown()");
-            final AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
-            alterDialog.setMessage("确定退出应用？");
-            alterDialog.setCancelable(true);
-            alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if(RongIM.getInstance() != null){
-                        RongIM.getInstance().disconnect();
-
-                        Intent intent = new Intent(MainActivity.this, StartAppActivity.class);
-                        intent.putExtra(StartAppActivity.EXIST, true);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                    }
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            long secondTime = System.currentTimeMillis();
+            if (secondTime - firstTime > 2000) {
+                Toast.makeText(MainActivity.this, "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+                firstTime = secondTime;
+                return true;
+            } else {
+                if (RongIM.getInstance() != null) {
+                    RongIM.getInstance().disconnect();
+                    Intent intent = new Intent(MainActivity.this, StartAppActivity.class);
+                    intent.putExtra(StartAppActivity.EXIST, true);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
-            });
-            alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            alterDialog.show();
 
-            return false;
-        } else {
-            return super.onKeyDown(keyCode, event);
+            }
         }
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        System.out.println("执行 onDestroy()");
+        return super.onKeyUp(keyCode, event);
     }
 
     private void initMenuItem() {
@@ -258,11 +307,13 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
             public void onPageSelected(int position) {
-                RadioButton radioButton = (RadioButton)radioGroup.getChildAt(position);
+                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(position);
                 radioButton.setChecked(true);
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
@@ -324,30 +375,30 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
         Constant constant = new Constant();
         RetrofitBuilder builder = new RetrofitBuilder(constant.BaseUrl + "/api/userCollect/");
         builder.isConnected(MainActivity.this);
-        map.put("username",Constant.username);
-        map.put("action","collectTasks");
+        map.put("username", Constant.username);
+        map.put("action", "collectTasks");
         builder.params(map);
         builder.get();
-        retrofit2.Call<ResponseBody> call = builder.getCall();
+        Call<ResponseBody> call = builder.getCall();
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     //System.out.println("////////////" + response.body().string());
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     String code = jsonObject.getString("code");
-                    if("200".equals(code)){
+                    if ("200".equals(code)) {
                         try {
                             JSONArray jsonArray = jsonObject.getJSONArray("list");
-                            for(int i=0;i<jsonArray.length();i++){
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jb = jsonArray.getJSONObject(i);
                                 collectData.add(jb);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }else if("404".equals(code)){
-                        Log.e("CollectFragment",jsonObject.getString("msg"));
+                    } else if ("404".equals(code)) {
+                        Log.e("CollectFragment", jsonObject.getString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -356,9 +407,11 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
                 }
             }
 
+            //请求失败时回调
             @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
-
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Toast.makeText(MainActivity.this, getBaseContext().getResources().getText(R.string.connect_to_server), Toast.LENGTH_LONG).show();
+                System.out.println(throwable.getMessage());
             }
         });
     }

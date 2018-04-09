@@ -1,7 +1,10 @@
 package com.tm.book_of_exercises.main.otherPage;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -16,8 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tm.book_of_exercises.MainActivity;
 import com.tm.book_of_exercises.R;
+import com.tm.book_of_exercises.adapter.CollectAdapter;
 import com.tm.book_of_exercises.constant.Constant;
 import com.tm.book_of_exercises.http.RetrofitBuilder;
 
@@ -29,7 +32,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.rong.imkit.RongIM;
-import io.rong.message.ContactNotificationMessage;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -160,9 +162,29 @@ public class SearchActivity extends AppCompatActivity {
                 try {
                     jsonObject = new JSONObject(response.body().string());
                     resultCode = jsonObject.getString("code");
+                    String url = jsonObject.getString("icon");
                     if("200".equals(resultCode)){
                         linearLayout_search.setVisibility(View.VISIBLE);
                         //imageView;
+                        //主线程处理消息队列中的消息，并刷新相应UI控件
+                        Handler handler = new Handler() {
+                            public void handleMessage(android.os.Message msg) {
+                                imageView.setImageBitmap((Bitmap) msg.obj);
+                            }
+                        };
+                        //同时要注意网络操作需在子线程操作，以免引起主线程阻塞，影响用途体验，同时采用handler消息机制进行参数处理，刷新UI控件
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                //String urlpath = "http://pic39.nipic.com/20140226/18071023_164300608000_2.jpg";
+                                Bitmap bm = CollectAdapter.getInternetPicture(url);
+                                Message msg = new Message();
+                                // 把bm存入消息中,发送到主线程
+                                msg.obj = bm;
+                                handler.sendMessage(msg);
+                            }
+                        }).start();
                         tv_remark.setText(jsonObject.getString("remark"));
                         tv_username.setText("账号：" + jsonObject.getString("username"));
                         tv_nickname.setText("昵称：" + jsonObject.getString("nickname"));
@@ -273,14 +295,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            //System.out.println("按下了back键   onKeyDown()");
-            //new MeFragment().query(accountTV.getText().toString());
-            this.finish();
-            return false;
-        }else {
-            return super.onKeyDown(keyCode, event);
-        }
+    public void finish() {
+        super.finish();
     }
 }

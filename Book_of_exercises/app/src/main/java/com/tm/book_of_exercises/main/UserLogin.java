@@ -1,10 +1,7 @@
 package com.tm.book_of_exercises.main;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +16,6 @@ import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.constant.Constant;
 import com.tm.book_of_exercises.http.RetrofitBuilder;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

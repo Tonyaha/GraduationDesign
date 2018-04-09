@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.adapter.CollectAdapter;
@@ -24,7 +23,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 import okhttp3.ResponseBody;
@@ -103,57 +101,23 @@ public class TasksActivity extends AppCompatActivity {
 
     private void initData() {
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mAdapter = new CollectAdapter(data, R.layout.item_all_tasks, R.id.all_task_tv, R.id.all_tasks_img, R.id.all_tasks_follow, R.id.all_tasks_label, "all");
+        mAdapter = new CollectAdapter(TasksActivity.this,data, R.layout.item_all_tasks, R.id.all_task_tv, R.id.all_tasks_img, R.id.all_tasks_follow, R.id.all_tasks_label, "all");
         mAdapter.mySetOnClickListener(new CollectAdapter.MyOnClickListener() {
             @Override
             public void onViewClickListener(View view, int position) {
                 switch (view.getId()) {
                     case R.id.all_tasks_follow:
-                        Toast.makeText(TasksActivity.this, "收藏按钮  +  " + position, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(TasksActivity.this, "收藏按钮  +  " + position, Toast.LENGTH_SHORT).show();
                         JSONObject jb = data.get(position);
                         TextView tv = view.findViewById(R.id.all_tasks_follow);
-                        String follow = "";
-//                        if ("已关注".equals(tv.getText().toString())){
-//                            follow = "true";
-//                        }else {
-//                            follow = "false";
-//                        }
-//                        try {
-//                            follow(jb.getInt("taskId"),follow,"null");
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
+                        try {
+                            Constant constant = new Constant(TasksActivity.this);
+                            constant.follow(jb.getInt("taskId"),tv.getText().toString(),"null");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
-            }
-        });
-    }
-
-    public void follow(int id,String follow,String msg) {
-        Constant constant = new Constant();
-        map.put("username", Constant.username);
-        map.put("action", "modifyCollect");
-        map.put("isFollow",follow);
-        map.put("taskId",id);
-        map.put("msg",msg);
-        RetrofitBuilder retrofitBuilder = new RetrofitBuilder(constant.BaseUrl + "/api/userCollect/");
-        retrofitBuilder.isConnected(this);
-        retrofitBuilder.params(map);
-        retrofitBuilder.post();
-        Call<ResponseBody> call = retrofitBuilder.getCall();
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    System.out.println("///////////////" + response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
         });
     }

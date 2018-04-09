@@ -73,13 +73,13 @@
             android:clickable="true"/>
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:scaleType="fitXY"
+            android:layout_height="wrap_content"
             android:id="@+id/task_img"
-            android:src="@drawable/start"
             android:layout_marginBottom="5dp"
             android:layout_gravity="center"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -106,6 +106,16 @@
                 android:src="@mipmap/message"
                 android:id="@+id/img_msg"
                 android:clickable="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#cccccc"/>
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"

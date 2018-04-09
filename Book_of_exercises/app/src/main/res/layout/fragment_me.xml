@@ -24,11 +24,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:src="@drawable/ic_launcher"
-                android:padding="10dp"
+                android:layout_margin="10dp"
                 android:background="#f5f5f5"
                 android:id="@+id/user_logo"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:scaleType="fitXY"/>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
