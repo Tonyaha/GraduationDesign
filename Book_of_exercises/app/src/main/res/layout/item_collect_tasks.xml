@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -23,6 +22,7 @@
                 android:layout_height="match_parent"
                 android:background="#cccccc" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="25dp"
@@ -37,12 +37,12 @@
                 android:text="#标签#"
                 android:textColor="@color/red"
                 android:textSize="15dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="#cccccc"/>
+                android:background="#cccccc" />
 
             <TextView
                 android:id="@+id/tasks_follow"
@@ -52,8 +52,9 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:textSize="15dp"
-                android:background="@drawable/tv_bg_follow"/>
+                android:background="@drawable/tv_bg_follow" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -62,15 +63,17 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#cccccc"/>
+                android:background="#cccccc" />
         </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_task"
             android:textSize="15dp"
             android:layout_marginBottom="5dp"
-            android:clickable="true"/>
+            android:clickable="true" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,8 +82,9 @@
             android:layout_gravity="center"
             android:clickable="true"
             android:scaleType="centerCrop"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,15 +102,17 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:id="@+id/tasks_collect"
-                android:clickable="true"/>
+                android:clickable="true" />
+
             <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:src="@mipmap/message"
                 android:id="@+id/img_msg"
-                android:clickable="true"/>
+                android:clickable="true" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -115,12 +121,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#cccccc"/>
+                android:background="#cccccc" />
         </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15dp"
-            android:id="@+id/tv_msg"/>
+            android:id="@+id/tv_msg" />
     </LinearLayout>
 </LinearLayout>

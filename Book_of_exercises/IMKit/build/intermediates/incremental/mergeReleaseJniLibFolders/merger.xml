@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\libs"><file name="Rong_IMKit.jar" path="F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\main\libs\Rong_IMKit.jar"/></source></dataSet><dataSet config="release"><source path="F:\my_projects\GraduationDesign\Book_of_exercises\IMKit\src\release\jniLibs"/></dataSet></merger>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f5f5f5">
 
@@ -28,7 +28,8 @@
                 android:background="#f5f5f5"
                 android:id="@+id/user_logo"
                 android:clickable="true"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -45,7 +46,8 @@
                     android:text="昵称"
                     android:gravity="center_vertical"
                     android:id="@+id/user_nickname"
-                    android:clickable="true"/>
+                    android:clickable="true" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -53,7 +55,7 @@
                     android:text="账号:"
                     android:gravity="center_vertical"
                     android:id="@+id/user_account"
-                    android:clickable="true"/>
+                    android:clickable="true" />
 
             </LinearLayout>
 
@@ -77,7 +79,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#cccccc"/>
+                    android:background="#cccccc" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,14 +97,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@mipmap/all"
-                    android:padding="10dp"/>
+                    android:padding="10dp" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
                     android:text="习题全集"
                     android:gravity="center_vertical"
-                    android:paddingLeft="15dp"/>
+                    android:paddingLeft="15dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -115,7 +118,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#cccccc"/>
+                    android:background="#cccccc" />
             </LinearLayout>
 
             <LinearLayout
@@ -134,13 +137,14 @@
                     android:layout_weight="1"
                     android:src="@mipmap/exit"
                     android:padding="10dp" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
                     android:text="退出登陆"
                     android:gravity="center_vertical"
-                    android:paddingLeft="15dp"/>
+                    android:paddingLeft="15dp" />
             </LinearLayout>
 
         </LinearLayout>

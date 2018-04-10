@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +9,8 @@
 
     <include
         layout="@layout/view_layout_title"
-        android:id="@+id/main_activity_title"/>
+        android:id="@+id/main_activity_title" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,12 +22,12 @@
             android:id="@+id/viewPage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="19"/>
+            android:layout_weight="19" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#bebebe"/>
+            android:background="#bebebe" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                     android:text="@string/contact"
                     android:textSize="12dp"
                     android:textColor="@drawable/trade_bottom_text"
-                    android:drawableTop="@drawable/trade_bottom_contact"/>
+                    android:drawableTop="@drawable/trade_bottom_contact" />
 
                 <RadioButton
                     android:id="@+id/add"
@@ -78,7 +78,7 @@
                     android:text="@string/add"
                     android:textSize="12dp"
                     android:textColor="@drawable/trade_bottom_text"
-                    android:drawableTop="@drawable/trade_bottom_add"/>
+                    android:drawableTop="@drawable/trade_bottom_add" />
 
                 <RadioButton
                     android:id="@+id/collect"
@@ -90,7 +90,7 @@
                     android:text="@string/collect"
                     android:textSize="12dp"
                     android:textColor="@drawable/trade_bottom_text"
-                    android:drawableTop="@drawable/trade_bottom_collect"/>
+                    android:drawableTop="@drawable/trade_bottom_collect" />
 
 
                 <RadioButton
@@ -103,7 +103,7 @@
                     android:text="@string/me"
                     android:textSize="12dp"
                     android:textColor="@drawable/trade_bottom_text"
-                    android:drawableTop="@drawable/trade_bottom_mine"/>
+                    android:drawableTop="@drawable/trade_bottom_mine" />
             </RadioGroup>
 
         </LinearLayout>

@@ -3,21 +3,25 @@
     package="com.tm.book_of_exercises">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!--内存溢出  android:hardwareAccelerated="false"
+        android:largeHeap="true"-->
     <application
         android:name=".chat.App"
         android:allowBackup="true"
@@ -26,7 +30,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartAppActivity"
+        <activity
+            android:name=".StartAppActivity"
             android:launchMode="singleTask"
             android:theme="@style/StartTheme">
             <intent-filter>
@@ -35,15 +40,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".GuideActivity"/>
-        <activity android:name=".main.UserRegister"/>
-        <activity android:name=".main.UserLogin"/>
-        <activity android:name=".main.otherPage.UserInfo"/>
-        <activity android:name=".main.otherPage.SearchActivity"/>
-        <activity android:name=".main.otherPage.TasksActivity"/>
-
-
-
+        <activity android:name=".GuideActivity" />
+        <activity android:name=".main.UserRegister" />
+        <activity android:name=".main.UserLogin" />
+        <activity android:name=".main.otherPage.UserInfo" />
+        <activity android:name=".main.otherPage.SearchActivity" />
+        <activity android:name=".main.otherPage.TasksActivity" />
 
 
         <!--会话列表-->
@@ -99,21 +101,21 @@
         </provider>
 
         <!--<service-->
-            <!--android:name="io.rong.imlib.ipc.RongService"-->
-            <!--android:exported="true"-->
-            <!--android:process=":ipc" />-->
+        <!--android:name="io.rong.imlib.ipc.RongService"-->
+        <!--android:exported="true"-->
+        <!--android:process=":ipc" />-->
 
         <!--<service-->
-            <!--android:name="io.rong.imlib.ReConnectService"-->
-            <!--android:exported="true" />-->
+        <!--android:name="io.rong.imlib.ReConnectService"-->
+        <!--android:exported="true" />-->
 
         <!--<receiver-->
-            <!--android:name="io.rong.imlib.ConnectChangeReceiver"-->
-            <!--android:exported="true" />-->
+        <!--android:name="io.rong.imlib.ConnectChangeReceiver"-->
+        <!--android:exported="true" />-->
 
         <!--<receiver-->
-            <!--android:name="io.rong.imlib.HeartbeatReceiver"-->
-            <!--android:process=":ipc" />-->
+        <!--android:name="io.rong.imlib.HeartbeatReceiver"-->
+        <!--android:process=":ipc" />-->
         <!-- imlib config end -->
     </application>
 

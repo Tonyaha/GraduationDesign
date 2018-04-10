@@ -68,6 +68,7 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
     private List<Friend> userIdList;
     public static ArrayList<String> data = new ArrayList<>();
     public static ArrayList<JSONObject> collectData = new ArrayList<>();
+    public static ArrayList<JSONObject> allTasksData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
         getFriendList(); //好友列表
         queryFriend();
         collectRequest(); //习题列表
+        tasksRequest(); //全部习题
 
 
         fragments = new ArrayList<>();
@@ -412,6 +414,50 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Toast.makeText(MainActivity.this, getBaseContext().getResources().getText(R.string.connect_to_server), Toast.LENGTH_LONG).show();
                 System.out.println(throwable.getMessage());
+            }
+        });
+    }
+
+    //全部习题
+    private void tasksRequest() {
+        Constant constant = new Constant();
+        RetrofitBuilder builder = new RetrofitBuilder(constant.BaseUrl + "/api/userCollect/");
+        builder.isConnected(this);
+        map.put("username", Constant.username);
+        map.put("action", "allTasks");
+        builder.params(map);
+        builder.get();
+        Call<ResponseBody> call = builder.getCall();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    //System.out.println("////////////" + response.body().string());
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String code = jsonObject.getString("code");
+                    if ("200".equals(code)) {
+                        try {
+                            JSONArray jsonArray = jsonObject.getJSONArray("list");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jb = jsonArray.getJSONObject(i);
+                                allTasksData.add(jb);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else if ("404".equals(code)) {
+                        Log.e("CollectFragment", jsonObject.getString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+
             }
         });
     }

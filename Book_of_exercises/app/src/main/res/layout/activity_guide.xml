@@ -20,7 +20,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/login"
-        android:background="@drawable/btn_bg_green_effect"/>
+        android:background="@drawable/btn_bg_green_effect" />
+
     <Button
         android:id="@+id/img_register"
         android:layout_width="140dp"
@@ -29,5 +30,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/register"
-        android:background="@drawable/btn_bg_gray_effect"/>
+        android:background="@drawable/btn_bg_gray_effect" />
 </RelativeLayout>

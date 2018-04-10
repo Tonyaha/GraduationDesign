@@ -224,22 +224,23 @@ def search(request):
         else:
             return HttpResponse(json.dumps({"code": '404', 'msg': '数据库里没有相关信息'}), content_type="application/json")
     elif request.method == 'POST':
-        user = request.POST.get('username')
+        username = request.POST.get('username')
         searchName = request.POST.get('searchName')
         remark = request.POST.get('remark')
-        friendList = User.objects.filter(username=user).first().list_of_friends
+        user = User.objects.filter(username=username).first()
         list_f = []
-        for itemDict in friendList:
-            if itemDict['username'] == searchName:
-                data = {
-                    'username': searchName,
-                    'remark': remark,
-                    ' QR': ''
-                }  # 不能再itemDict 上直接修改dict中的值
-                list_f.append(data)
-            else:
-                list_f.append(itemDict)
         if user:
+            if user.list_of_friends:
+                for itemDict in user.list_of_friends:
+                    if itemDict['username'] == searchName:
+                        data = {
+                            'username': searchName,
+                            'remark': remark,
+                            ' QR': ''
+                        }  # 不能再itemDict 上直接修改dict中的值
+                        list_f.append(data)
+                    else:
+                        list_f.append(itemDict)
             try:
                 User.objects(username=user).update(list_of_friends=list_f)
                 code = "200"

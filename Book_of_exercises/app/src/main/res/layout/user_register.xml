@@ -13,18 +13,18 @@
         android:orientation="vertical">
         <!--&lt;!&ndash;头像&ndash;&gt;-->
         <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:background="@color/black2"-->
-            <!--android:paddingBottom="5dp">-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:background="@color/black2"-->
+        <!--android:paddingBottom="5dp">-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/img_logo"-->
-                <!--android:layout_width="120dp"-->
-                <!--android:layout_height="120dp"-->
-                <!--android:background="@drawable/logo_img_bg"-->
-                <!--android:src="@drawable/ic_launcher" />-->
+        <!--<ImageView-->
+        <!--android:id="@+id/img_logo"-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="120dp"-->
+        <!--android:background="@drawable/logo_img_bg"-->
+        <!--android:src="@drawable/ic_launcher" />-->
         <!--</LinearLayout>-->
         <ScrollView
             android:layout_width="match_parent"
@@ -139,6 +139,7 @@
                         android:text="@string/user_occupation"
                         android:textColor="#353535"
                         android:textSize="16sp" />
+
                     <RadioGroup
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -151,7 +152,7 @@
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:text="  @string/teacher"
-                            android:id="@+id/rb_teacher"/>
+                            android:id="@+id/rb_teacher" />
 
                         <RadioButton
                             android:layout_marginLeft="10dp"
@@ -159,7 +160,7 @@
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:text="  @string/student"
-                            android:checked="true"/>
+                            android:checked="true" />
                     </RadioGroup>
 
                 </LinearLayout>
@@ -238,6 +239,7 @@
                     android:text="@string/register"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

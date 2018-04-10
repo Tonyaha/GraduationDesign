@@ -38,36 +38,36 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     // 添加 Retrofit库的依赖
-    implementation  'com.squareup.retrofit2:retrofit:2.4.0'// Retrofit库
-    implementation  'com.squareup.okhttp3:okhttp:3.10.0'// Okhttp库
-    implementation  'com.squareup.okio:okio:1.14.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'// Retrofit库
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'// Okhttp库
+    implementation 'com.squareup.okio:okio:1.14.0'
 
     // Retrofit支持多种数据解析方式
-    implementation  'com.squareup.retrofit2:converter-gson:2.3.0' //  Gson
-    implementation  'com.squareup.retrofit2:converter-jackson:2.0.2' //Jackson
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0' //  Gson
+    implementation 'com.squareup.retrofit2:converter-jackson:2.0.2' //Jackson
 
     // Retrofit支持多种网络请求适配器方式：guava、Java8和rxjava  默认使用 Android的 CallAdapter
     //compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-    implementation  'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    implementation  'com.squareup.retrofit2:converter-scalars:2.1.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
 
-    implementation  'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation  'io.reactivex.rxjava2:rxjava:2.1.7'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
 
     //替换ListView
-    implementation  'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 
-    implementation  project (':IMKit')
+    implementation project(':IMKit')
 
     //处理rxjava内存泄漏 RxDialogFragment依赖
     // 注意：不要使用组合的play-services目标，它会引入数十个库，使应用程序膨胀，而是仅指定应用程序使用的特定Google Play服务API。
     //compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
     //compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
-    implementation  'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
 
     //compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     //compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
-    implementation  'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
 
     implementation project(':ocr_ui')
 

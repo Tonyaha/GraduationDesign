@@ -1,53 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:id="@+id/tv_notice"
-        android:textColor="@color/red"
-        android:textSize="15dp"
-        android:text="注意：请在需要换行显示的地方加上 '\\n'"
-        android:gravity="center"
-        android:paddingRight="15dp"
-        android:paddingLeft="15dp"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:focusable="true"
-        android:focusableInTouchMode="true"   />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:orientation="horizontal">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#cccccc" />
-    </LinearLayout>
-    <ScrollView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/cloud"
+        android:visibility="gone"
+        android:background="#ffff" />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10">
+        android:layout_height="match_parent"
+        android:id="@+id/add_frameLayout">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/selectTv"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@color/white"
-                android:textSize="15dp"/>
+                android:layout_height="30dp"
+                android:id="@+id/tv_notice"
+                android:textColor="@color/red"
+                android:textSize="15dp"
+                android:text="注意：请在需要换行显示的地方加上 '\\n'"
+                android:gravity="center"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,78 +49,70 @@
                     android:background="#cccccc" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/selectImage"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
+                android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:orientation="horizontal">
-
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#cccccc" />
-            </LinearLayout>
+                    android:orientation="vertical"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp">
+
+                    <EditText
+                        android:id="@+id/selectTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/white"
+                        android:textSize="15dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#cccccc" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/selectImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#cccccc" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
-    </ScrollView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_gravity="center_vertical">
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:text="下一题"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/btn_bg_gray_effect"
-            android:id="@+id/next"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:text="保   存"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/btn_bg_green_effect"
-            android:id="@+id/save"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:text="识   别"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/btn_bg_green_effect"
-            android:id="@+id/extract"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:text="添   图"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/btn_bg_gray_effect"
-            android:id="@+id/addImg"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:text="发   送"
-            android:background="@drawable/btn_bg_gray_effect"
-            android:id="@+id/send"/>
-    </LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/blue"
+            app:rippleColor="#61b4e7"
+            app:elevation="10dp"
+            app:pressedTranslationZ="5dp"
+            app:fabSize="mini"
+            android:src="@mipmap/suspension"
+            android:layout_gravity="right | bottom"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/btnSuspension" />
+    </FrameLayout>
 </LinearLayout>

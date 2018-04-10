@@ -52,11 +52,12 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
     private String img;
 
 
-    public CollectAdapter(ArrayList<JSONObject> data, int xmlItemId){
+    public CollectAdapter(ArrayList<JSONObject> data, int xmlItemId) {
         this.mData = data;
         this.xmlItem = xmlItemId;
     }
-    public CollectAdapter(Context context,ArrayList<JSONObject> data, int xmlItemId, int textId, int imgId, int collect, int follow, int tvMsgId, int label, String f) {
+
+    public CollectAdapter(Context context, ArrayList<JSONObject> data, int xmlItemId, int textId, int imgId, int collect, int follow, int tvMsgId, int label, String f) {
         this.mData = data;
         this.context = context;
         this.xmlItem = xmlItemId;
@@ -69,7 +70,7 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
         this.tvFollowId = follow;
     }
 
-    public CollectAdapter(Context context,ArrayList<JSONObject> data, int xmlItemId, int textId, int imgId, int follow, int label, String f) {
+    public CollectAdapter(Context context, ArrayList<JSONObject> data, int xmlItemId, int textId, int imgId, int follow, int label, String f) {
         this.mData = data;
         this.context = context;
         this.xmlItem = xmlItemId;
@@ -113,36 +114,45 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
             try {
                 collectFlag = jsonObject.getString("collectFlag");
                 String urlpath = jsonObject.getString("contextImg");
-                holder.mTv.setText("  " + (position + 1) + "、" + jsonObject.getString("context").replace("\\n","\n"));
-                if (jsonObject.getString("contextImg") == "null") {
-
-                } else {
-
+                String content = "  " + (position + 1) + "、" + jsonObject.getString("context").replace("\\n", "\n");
+                holder.mTv.setText(content);
+                if (!"null".equals(jsonObject.getString("contextImg"))) {
                     Handler handler = new Handler() {
+                        Bitmap bitmap1 = null;
                         public void handleMessage(android.os.Message msg) {
                             WindowManager wm = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
                             int width = wm.getDefaultDisplay().getWidth();
-                            Bitmap bm = (Bitmap) msg.obj;
-                            int height=0;
-                            if(bm.getHeight() > bm.getWidth()){
-                                height = width * (bm.getHeight()/bm.getWidth());
-                            }else {
-                                height = width / (bm.getWidth()/bm.getHeight());
+                            if(bitmap1 != null){
+                                bitmap1.recycle();
+                                bitmap1 = null;
+                            }
+                            bitmap1 = (Bitmap) msg.obj;
+                            int height = 0;
+                            if (bitmap1.getHeight() > bitmap1.getWidth()) {
+                                height = width * (bitmap1.getHeight() / bitmap1.getWidth());
+                            } else {
+                                height = width / (bitmap1.getWidth() / bitmap1.getHeight());
                             }
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.mImg.getLayoutParams();
                             params.height = height;
                             holder.mImg.setLayoutParams(params);
-                            holder.mImg.setImageBitmap((Bitmap) msg.obj);
+                            holder.mImg.setImageBitmap(bitmap1);
                         }
                     };
                     new Thread(new Runnable() {
+
                         @Override
                         public void run() {
                             // TODO Auto-generated method stub
-                            Bitmap bm = getInternetPicture(urlpath);
+                            Bitmap bitmap2 = null;
+                            if (bitmap2 != null){
+                                bitmap2 = null;
+                                bitmap2.recycle();
+                            }
+                            bitmap2 = getInternetPicture(urlpath);
                             Message msg = new Message();
                             // 把bm存入消息中,发送到主线程
-                            msg.obj = bm;
+                            msg.obj = bitmap2;
                             handler.sendMessage(msg);
                         }
                     }).start();
@@ -181,21 +191,25 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
             try {
                 collectFlag = jsonObject.getString("collectFlag");
                 String urlpath = jsonObject.getString("contextImg");
-                holder.mTv.setText("  " + (position + 1) + "、" + jsonObject.getString("context").replace("\\n","\n"));
-                if (jsonObject.getString("contextImg") == "null") {
-
-                } else {
+                String content = "  " + (position + 1) + "、" + jsonObject.getString("context").replace("\\n", "\n");
+                holder.mTv.setText(content);
+                if (!"null".equals(jsonObject.getString("contextImg"))) {
                     //主线程处理消息队列中的消息，并刷新相应UI控件
                     Handler handler = new Handler() {
                         public void handleMessage(android.os.Message msg) {
+                            Bitmap bm = null;
                             WindowManager wm = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
                             int width = wm.getDefaultDisplay().getWidth();
-                            Bitmap bm = (Bitmap) msg.obj;
-                            int height=0;
-                            if(bm.getHeight() > bm.getWidth()){
-                                height = width * (bm.getHeight()/bm.getWidth());
-                            }else {
-                                height = width / (bm.getWidth()/bm.getHeight());
+                            if (bm != null){
+                                bm.recycle();
+                                bm = null;
+                            }
+                            bm = (Bitmap) msg.obj;
+                            int height = 0;
+                            if (bm.getHeight() > bm.getWidth()) {
+                                height = width * (bm.getHeight() / bm.getWidth());
+                            } else {
+                                height = width / (bm.getWidth() / bm.getHeight());
                             }
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.mImg.getLayoutParams();
                             params.height = height;
@@ -211,10 +225,15 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
                         public void run() {
                             // TODO Auto-generated method stub
                             //String urlpath = "http://pic39.nipic.com/20140226/18071023_164300608000_2.jpg";
-                            Bitmap bm = getInternetPicture(urlpath);
+                            Bitmap bm1 = null;
+                            if (bm1 != null){
+                                bm1.recycle();
+                                bm1 = null;
+                            }
+                            bm1 = getInternetPicture(urlpath);
                             Message msg = new Message();
                             // 把bm存入消息中,发送到主线程
-                            msg.obj = bm;
+                            msg.obj = bm1;
                             handler.sendMessage(msg);
                         }
                     }).start();
@@ -332,7 +351,7 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
 
 
     public static Bitmap getInternetPicture(String urlpath) {
-        Bitmap bm = null;
+        Bitmap bitmap = null;
         // 1、确定网址
         // http://pic39.nipic.com/20140226/18071023_164300608000_2.jpg
         //String urlpath = UrlPath;
@@ -357,7 +376,10 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
                 // 7、拿到服务器返回的流，客户端请求的数据，就保存在流当中
                 InputStream is = connection.getInputStream();
                 // 8、从流中读取数据，构造一个图片对象GoogleAPI
-                bm = BitmapFactory.decodeStream(is);
+                if (bitmap != null){
+                    bitmap.recycle();
+                }
+                bitmap  = BitmapFactory.decodeStream(is);
                 // 9、把图片设置到UI主线程
                 // ImageView中,获取网络资源是耗时操作需放在子线程中进行,通过创建消息发送消息给主线程刷新控件；
 
@@ -365,13 +387,13 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
 
             } else {
                 //Log.v("tag", "网络请求失败");
-                bm = null;
+                bitmap  = null;
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return bm;
+        return bitmap ;
     }
 }

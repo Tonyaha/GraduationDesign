@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,15 +28,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@mipmap/add_people"/>
+                    android:src="@mipmap/add_people" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:paddingLeft="5dp"
-                    android:text="新的朋友"/>
+                    android:text="新的朋友" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -48,7 +48,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#cccccc"/>
+                    android:background="#cccccc" />
             </LinearLayout>
         </LinearLayout>
 
@@ -56,8 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/contactRecyclerView"
-            android:scrollbars="vertical">
-        </android.support.v7.widget.RecyclerView>
+            android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 

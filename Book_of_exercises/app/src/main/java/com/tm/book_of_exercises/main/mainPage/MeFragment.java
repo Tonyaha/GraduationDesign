@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.ResponseBody;
@@ -200,4 +201,6 @@ public class MeFragment extends Fragment {
         intent.putExtra("userClass", userClass);
         intent.putExtra("userGrade", userGrade);
     }
+
+
 }

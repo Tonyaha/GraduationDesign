@@ -22,6 +22,7 @@
                 android:layout_height="match_parent"
                 android:background="#cccccc" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="25dp"
@@ -35,12 +36,13 @@
                 android:gravity="center_vertical"
                 android:text="#标签#"
                 android:textColor="@color/red"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="#cccccc"/>
+                android:background="#cccccc" />
+
             <TextView
                 android:id="@+id/all_tasks_follow"
                 android:layout_width="0dp"
@@ -49,7 +51,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:textSize="15dp"
-                android:background="@drawable/tv_bg_follow"/>
+                android:background="@drawable/tv_bg_follow" />
         </LinearLayout>
 
         <LinearLayout
@@ -62,6 +64,7 @@
                 android:layout_height="match_parent"
                 android:background="#cccccc" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/all_task_tv"
             android:layout_width="match_parent"
@@ -79,6 +82,6 @@
             android:layout_marginBottom="5dp"
             android:clickable="true"
             android:scaleType="centerCrop"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true" />
     </LinearLayout>
 </LinearLayout>

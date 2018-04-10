@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/transparent">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_menu_group">
+
+        <RadioButton
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="下一题"
+            android:textSize="12dp"
+            android:checked="false"
+            android:button="@null"
+            android:textColor="@drawable/trade_bottom_text"
+            android:drawableRight="@drawable/trade_add_menu"
+            android:id="@+id/next"
+            android:textStyle="bold"/>
+
+        <RadioButton
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="保    存"
+            android:textSize="12dp"
+            android:button="@null"
+            android:checked="false"
+            android:textColor="@drawable/trade_bottom_text"
+            android:drawableRight="@drawable/trade_add_menu"
+            android:id="@+id/save"
+            android:textStyle="bold"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="识    别"
+            android:textSize="12dp"
+            android:button="@null"
+            android:checked="false"
+            android:textColor="@drawable/trade_bottom_text"
+            android:drawableRight="@drawable/trade_add_menu"
+            android:id="@+id/extract"
+            android:textStyle="bold"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="加图片"
+            android:textSize="12dp"
+            android:button="@null"
+            android:checked="false"
+            android:textColor="@drawable/trade_bottom_text"
+            android:drawableRight="@drawable/trade_add_menu"
+            android:id="@+id/addImg"
+            android:textStyle="bold"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="发    送"
+            android:textSize="12dp"
+            android:button="@null"
+            android:checked="false"
+            android:textColor="@drawable/trade_bottom_text"
+            android:drawableRight="@drawable/trade_add_menu"
+            android:id="@+id/send"
+            android:textStyle="bold" />
+    </RadioGroup>
+</LinearLayout>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="F:\my_projects\GraduationDesign\Book_of_exercises\IMLib\src\main\assets"/><source path="F:\my_projects\GraduationDesign\Book_of_exercises\IMLib\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="F:\my_projects\GraduationDesign\Book_of_exercises\IMLib\src\release\assets"/></dataSet></merger>

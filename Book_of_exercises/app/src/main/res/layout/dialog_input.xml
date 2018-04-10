@@ -13,7 +13,7 @@
         android:textStyle="bold"
         android:textColor="@color/red"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,6 +41,7 @@
         android:layout_height="35dp"
         android:gravity="center_vertical"
         android:layout_marginBottom="5dp">
+
         <Button
             android:id="@+id/cancel"
             android:layout_width="0dp"
@@ -49,7 +50,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="25dp"
             android:text="取消"
-            android:background="@drawable/btn_bg_gray_effect"/>
+            android:background="@drawable/btn_bg_gray_effect" />
 
         <Button
             android:id="@+id/ok"
@@ -59,6 +60,6 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="50dp"
             android:text="确定"
-            android:background="@drawable/btn_bg_green_effect"/>
+            android:background="@drawable/btn_bg_green_effect" />
     </LinearLayout>
 </LinearLayout>
