@@ -19,14 +19,14 @@ from django.conf.urls import url
 from Book_of_exercises_server import settings
 from Book_server.views import *
 
-
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^register/$', register, name="register"),
     url(r'^login/$', login, name="login"),
     url(r'^userInfo/$', queryInfo, name="userInfo"),
-    url(r'^api/search/$',search,name='userSearch'),
-    url(r'^api/userCollect/$',userTasks,name='collect'),
-    url(r'images/$',imageServer,name='images'),
-    url(r'api/save',saveTasks,name='Save')
+    url(r'^api/search/$', search, name='userSearch'),
+    url(r'^api/userCollect/$', userTasks, name='collect'),
+    url(r'images/$', imageServer, name='images'),
+    url(r'api/save', saveTasks, name='Save'),
+    url(r'api/newFriend', newFriend, name='Save')
 ]

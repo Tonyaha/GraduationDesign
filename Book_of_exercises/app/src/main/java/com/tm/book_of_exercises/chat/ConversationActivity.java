@@ -1,12 +1,10 @@
 package com.tm.book_of_exercises.chat;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.widget.TextView;
 
-import com.tm.book_of_exercises.MainActivity;
 import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.tools.AnnotateUtils;
 import com.tm.book_of_exercises.tools.ViewInject;
@@ -19,6 +17,10 @@ public class ConversationActivity extends AppCompatActivity {
 
     @ViewInject(R.id.tv_friend)
     private TextView tv_bar;
+
+    public Context getContext() {
+        return this;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

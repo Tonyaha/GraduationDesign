@@ -4,7 +4,7 @@ import requests
 import time
 import hashlib
 
-from Book_server.models import Tasks
+from Book_server.models import Tasks, User
 
 
 class ObtainToken():
@@ -49,32 +49,14 @@ class ObtainToken():
             print('>>>ObtainToken<<<',e)
         return  self.resultDict
 
-def friendShip():
-    url = 'http://webim.demo.rong.io.request_friend'
-    randomNum = str(random.randint(0, 888888) * 1000)
-    timeStamp = str(int(time.time()))
-    string = '%s%s%s' % ('8snmcdALQl', randomNum, timeStamp)
-    signature = hashlib.sha1(string.encode('utf-8')).hexdigest()
-    header = {
-        'Host': 'api.cn.ronghub.com',
-        'App-Key': 'cpj2xarlc73qn',
-        'Nonce': randomNum,
-        'Timestamp': timeStamp,
-        'Signature': str(signature),
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-    try:
-        rep = requests.post(url,headers=header,data={"Interger":"tm",'String':"sgdsgs"}).text
-        print(rep)
-    except requests.RequestException as e:
-        print(">>>>>>>FriendShip<<<<<<<",e)
+
 def test():
-    task = Tasks(context = '',taskId = 7 )
-    task.save()
+    user = User.objects(username = "tm").first()
+    print(type(list(user.list_of_friends)))
 
 
 if __name__ == '__main__':
-    token = ObtainToken('aaa','ABC','http://wmimg.sc115.com/tx/new/pic/0414/16044cga2r4dh2v.jpg')
-    token.getRongToken()
-    #friendShip()
-    #test()
+    # token = ObtainToken('aaa','ABC','http://wmimg.sc115.com/tx/new/pic/0414/16044cga2r4dh2v.jpg')
+    # token.getRongToken()
+
+    test()

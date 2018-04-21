@@ -10,11 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tm.book_of_exercises.R;
 
 import org.json.JSONException;
@@ -107,7 +106,7 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
     });
 
     @Override
-    public void onBindViewHolder(CollectAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         // 绑定数据
         JSONObject jsonObject = mData.get(position);
         if ("all".equals(flag)) {
@@ -117,45 +116,52 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
                 String content = "  " + (position + 1) + "、" + jsonObject.getString("context").replace("\\n", "\n");
                 holder.mTv.setText(content);
                 if (!"null".equals(jsonObject.getString("contextImg"))) {
-                    Handler handler = new Handler() {
-                        Bitmap bitmap1 = null;
-                        public void handleMessage(android.os.Message msg) {
-                            WindowManager wm = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
-                            int width = wm.getDefaultDisplay().getWidth();
-                            if(bitmap1 != null){
-                                bitmap1.recycle();
-                                bitmap1 = null;
-                            }
-                            bitmap1 = (Bitmap) msg.obj;
-                            int height = 0;
-                            if (bitmap1.getHeight() > bitmap1.getWidth()) {
-                                height = width * (bitmap1.getHeight() / bitmap1.getWidth());
-                            } else {
-                                height = width / (bitmap1.getWidth() / bitmap1.getHeight());
-                            }
-                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.mImg.getLayoutParams();
-                            params.height = height;
-                            holder.mImg.setLayoutParams(params);
-                            holder.mImg.setImageBitmap(bitmap1);
-                        }
-                    };
-                    new Thread(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            // TODO Auto-generated method stub
-                            Bitmap bitmap2 = null;
-                            if (bitmap2 != null){
-                                bitmap2 = null;
-                                bitmap2.recycle();
-                            }
-                            bitmap2 = getInternetPicture(urlpath);
-                            Message msg = new Message();
-                            // 把bm存入消息中,发送到主线程
-                            msg.obj = bitmap2;
-                            handler.sendMessage(msg);
-                        }
-                    }).start();
+                    Glide.with(context)
+                            .load(urlpath)
+                            .into(holder.mImg);
+
+                    //不使用过度动画  .transition(BitmapTransitionOptions.withCrossFade())  // TransitionOptions是和你要加载的资源的类型绑定的，也就是说，如果你请求一张位图(Bitmap),你就需要使用BitmapTransitionOptions，而不是DrawableTransitionOptions。因此，你请求的这张位图，你需要用简单的淡入，而不能用 交叉淡入(DrawableTransitionOptions.withCrossFade())。如果既不是Bitmap也不是Drawable可以使用GenericTransitionOptions
+
+//                    Handler handler = new Handler() {
+//                        Bitmap bitmap1 = null;
+//                        public void handleMessage(android.os.Message msg) {
+//                            WindowManager wm = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
+//                            int width = wm.getDefaultDisplay().getWidth();
+//                            if(bitmap1 != null){
+//                                bitmap1.recycle();
+//                                bitmap1 = null;
+//                            }
+//                            bitmap1 = (Bitmap) msg.obj;
+//                            int height = 0;
+//                            if (bitmap1.getHeight() > bitmap1.getWidth()) {
+//                                height = width * (bitmap1.getHeight() / bitmap1.getWidth());
+//                            } else {
+//                                height = width / (bitmap1.getWidth() / bitmap1.getHeight());
+//                            }
+//                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.mImg.getLayoutParams();
+//                            params.height = height;
+//                            holder.mImg.setLayoutParams(params);
+//                            holder.mImg.setImageBitmap(bitmap1);
+//                        }
+//                    };
+//                    new Thread(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            // TODO Auto-generated method stub
+//                            Bitmap bitmap2 = null;
+//                            if (bitmap2 != null){
+//                                bitmap2 = null;
+//                                bitmap2.recycle();
+//                            }
+//                            bitmap2 = getInternetPicture(urlpath);
+//                            Message msg = new Message();
+//                            // 把bm存入消息中,发送到主线程
+//                            msg.obj = bitmap2;
+//                            handler.sendMessage(msg);
+//                        }
+//                    }).start();
                 }
                 if ("true".equals(collectFlag)) {
                     holder.mTvLabel.setText("#收藏习题#");
@@ -194,53 +200,54 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
                 String content = "  " + (position + 1) + "、" + jsonObject.getString("context").replace("\\n", "\n");
                 holder.mTv.setText(content);
                 if (!"null".equals(jsonObject.getString("contextImg"))) {
+                    Glide.with(context)
+                            .load(urlpath)
+                            .into(holder.mImg);
                     //主线程处理消息队列中的消息，并刷新相应UI控件
-                    Handler handler = new Handler() {
-                        public void handleMessage(android.os.Message msg) {
-                            Bitmap bm = null;
-                            WindowManager wm = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
-                            int width = wm.getDefaultDisplay().getWidth();
-                            if (bm != null){
-                                bm.recycle();
-                                bm = null;
-                            }
-                            bm = (Bitmap) msg.obj;
-                            int height = 0;
-                            if (bm.getHeight() > bm.getWidth()) {
-                                height = width * (bm.getHeight() / bm.getWidth());
-                            } else {
-                                height = width / (bm.getWidth() / bm.getHeight());
-                            }
-                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.mImg.getLayoutParams();
-                            params.height = height;
-                            holder.mImg.setLayoutParams(params);
-                            holder.mImg.setImageBitmap((Bitmap) msg.obj);
-                        }
-
-                        ;
-                    };
-                    //同时要注意网络操作需在子线程操作，以免引起主线程阻塞，影响用途体验，同时采用handler消息机制进行参数处理，刷新UI控件
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // TODO Auto-generated method stub
-                            //String urlpath = "http://pic39.nipic.com/20140226/18071023_164300608000_2.jpg";
-                            Bitmap bm1 = null;
-                            if (bm1 != null){
-                                bm1.recycle();
-                                bm1 = null;
-                            }
-                            bm1 = getInternetPicture(urlpath);
-                            Message msg = new Message();
-                            // 把bm存入消息中,发送到主线程
-                            msg.obj = bm1;
-                            handler.sendMessage(msg);
-                        }
-                    }).start();
+//                    Handler handler = new Handler() {
+//                        public void handleMessage(Message msg) {
+//                            Bitmap bm = null;
+//                            WindowManager wm = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
+//                            int width = wm.getDefaultDisplay().getWidth();
+//                            if (bm != null){
+//                                bm.recycle();
+//                                bm = null;
+//                            }
+//                            bm = (Bitmap) msg.obj;
+//                            int height = 0;
+//                            if (bm.getHeight() > bm.getWidth()) {
+//                                height = width * (bm.getHeight() / bm.getWidth());
+//                            } else {
+//                                height = width / (bm.getWidth() / bm.getHeight());
+//                            }
+//                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.mImg.getLayoutParams();
+//                            params.height = height;
+//                            holder.mImg.setLayoutParams(params);
+//                            holder.mImg.setImageBitmap((Bitmap) msg.obj);
+//                        }
+//
+//                        ;
+//                    };
+//                    //同时要注意网络操作需在子线程操作，以免引起主线程阻塞，影响用途体验，同时采用handler消息机制进行参数处理，刷新UI控件
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            // TODO Auto-generated method stub
+//                            //String urlpath = "http://pic39.nipic.com/20140226/18071023_164300608000_2.jpg";
+//                            Bitmap bm1 = null;
+//                            if (bm1 != null){
+//                                bm1.recycle();
+//                                bm1 = null;
+//                            }
+//                            bm1 = getInternetPicture(urlpath);
+//                            Message msg = new Message();
+//                            // 把bm存入消息中,发送到主线程
+//                            msg.obj = bm1;
+//                            handler.sendMessage(msg);
+//                        }
+//                    }).start();
                 }
-                if ("null".equals(jsonObject.getString("msg")) || "".equals(jsonObject.getString("msg"))) {
-                    //System.out.println("////////////////////" + jsonObject.getString("msg"));
-                } else {
+                if (!"null".equals(jsonObject.getString("msg")) || !"".equals(jsonObject.getString("msg"))) {
                     holder.mTvMsg.setText(jsonObject.getString("msg"));
                 }
 

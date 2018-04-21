@@ -25,7 +25,6 @@ import android.view.animation.AlphaAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,7 +62,6 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
     private ImageView selectImg;
     private EditText et_content;
     private FloatingActionButton floatButton;
-    private RadioButton btn_next, btn_save, btn_send, btn_extract, btn_addImg;
     private RadioGroup radioGroup;
 
     private Bitmap prodImg;
@@ -82,64 +80,8 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
         selectImg = view.findViewById(R.id.selectImage);
         et_content = view.findViewById(R.id.selectTv);
         floatButton = view.findViewById(R.id.btnSuspension);
-
-
+        
         floatButton.setOnClickListener(this) ;
-
-//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-//                int viewId = radioGroup.getCheckedRadioButtonId(); //通过 group 找对应按钮 id
-//                switch (viewId) {
-//                    case R.id.extract:
-//                        Intent intent = new Intent(getActivity(), CameraActivity.class);
-//                        intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH, FileUtil.getSaveFile(getActivity()).getAbsolutePath());
-//                        intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_GENERAL);
-//                        startActivityForResult(intent, REQUEST_CODE_ACCURATE_BASIC);
-//                        break;
-//                    case R.id.send:
-//                        break;
-//                    case R.id.save:
-//                        if (!("").equals(et_content.getText().toString().trim()) | !("null").equals(strBitmap)) {
-//                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-//                            alertDialog.setTitle("显示用户")
-//                                    .setIcon(R.mipmap.icon)
-//                                    .setMessage("是否显示您的账户信息？")
-//                                    .setCancelable(true);
-//
-//                            alertDialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialogInterface, int i) {
-//                                    saveTasks("true");
-//                                    dialogInterface.cancel();
-//                                }
-//                            });
-//                            alertDialog.setNegativeButton("否", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialogInterface, int i) {
-//                                    saveTasks("false");
-//                                    dialogInterface.cancel();
-//                                }
-//                            });
-//                            alertDialog.show();
-//                        } else {
-//                            Toast.makeText(getActivity(), "你并没有录入习题", Toast.LENGTH_LONG).show();
-//                        }
-//                        break;
-//                    case R.id.next:
-//                        et_content.setText("");
-//                        selectImg.setImageResource(R.mipmap.icon);
-//                        break;
-//                    case R.id.addImg:
-//                        //ImageHandle.pickAlbum(getActivity(), Constant.CODE_SELECT_IMAGE);
-//                        Intent intent1 = new Intent(Intent.ACTION_PICK);
-//                        intent1.setType("image/*");
-//                        startActivityForResult(intent1, Constant.CODE_SELECT_IMAGE);
-//                        break;
-//                }
-//            }
-//        });
-
         return view;//super.onCreateView(inflater, container, savedInstanceState);
     }
 

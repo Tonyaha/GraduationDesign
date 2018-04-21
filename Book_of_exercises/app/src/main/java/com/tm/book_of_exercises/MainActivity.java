@@ -171,11 +171,6 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//
-//                userIdList.add(new Friend("tm","TM",Constant.uri_tm));
-//                userIdList.add(new Friend("tsm","TSM",Constant.uri_tsm));
-//                userIdList.add(new Friend("admin","ADMIN",Constant.uri_admin));
-
             }
 
             //请求失败时回调

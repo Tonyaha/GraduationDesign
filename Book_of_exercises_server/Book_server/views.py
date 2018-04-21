@@ -409,3 +409,23 @@ def saveTasks(request):
                     tasks = Tasks(taskId=taskId, byId=username + '_false', context=content, contextImg=url)
                     tasks.save()
             return HttpResponse(json.dumps({'msg': '保存成功'}))
+
+def newFriend(request):
+    username = request.POST.get("username")
+    targetname = request.POST.get("targetname")
+    user1 = User.objects(username = username).first()
+    user2 = User.objects(username = targetname).first()
+    list_1 = []
+    if user1.list_of_friends:
+        list_1 = list(user1.list_of_friends)
+    list_1.append({"username" : targetname,"remark" : user2.nickname," QR" : ""})
+    User.objects(username=username).update(list_of_friends=list_1)
+
+    list_2 = []
+    if user2.list_of_friends:
+        list_2 = list(user2.list_of_friends)
+    list_2.append({"username": username,"remark": user1.nickname," QR": ""})
+    User.objects(username=targetname).update(list_of_friends=list_2)
+    return HttpResponse(json.dumps({"code": "200"}), content_type="application/json")
+
+

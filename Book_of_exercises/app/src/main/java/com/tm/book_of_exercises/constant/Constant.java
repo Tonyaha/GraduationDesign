@@ -24,7 +24,7 @@ public class Constant{
     public static final int CODE_SELECT_IMAGE = 2;//相册RequestCode
     public static final int TYPE_TAKE_PHOTO = 1;//Uri获取类型判断
     public static final int CODE_TAKE_PHOTO = 1;//相机RequestCode
-    public final String BaseUrl = "http://140.143.95.232:8000";//"http://192.168.137.1:8000";//"http://192.168.137.1:8081";
+    public final String BaseUrl = "http://192.168.137.1:8000";//""http://140.143.95.232:8000";//http://192.168.137.1:8081";
     public static String username= "";
     public static Uri uri_admin = Uri.parse("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2619911597,2242133565&fm=27&gp=0.jpg");
 
@@ -73,5 +73,25 @@ public class Constant{
         });
     }
 
+    public void addFriend(Context context ,String userId,String targetId){
+        map.put("username",userId);
+        map.put("targetname",targetId);
+        RetrofitBuilder builder = new RetrofitBuilder(BaseUrl + "/api/newFriend/");
+        builder.isConnected(context);
+        builder.params(map);
+        builder.post();
+        Call<ResponseBody> call = builder.getCall();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
 }
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -28,10 +27,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.RichContentMessage;
+import io.rong.message.TextMessage;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,6 +66,8 @@ public class SearchActivity extends AppCompatActivity {
     private String name = "";
     private JSONObject jsonObject;
 
+    private String url = null;
+    public static String targetId = null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +168,7 @@ public class SearchActivity extends AppCompatActivity {
                 try {
                     jsonObject = new JSONObject(response.body().string());
                     resultCode = jsonObject.getString("code");
-                    String url = jsonObject.getString("icon");
+                    url = jsonObject.getString("icon");
                     if("200".equals(resultCode)){
                         linearLayout_search.setVisibility(View.VISIBLE);
                         //imageView;
@@ -179,7 +185,7 @@ public class SearchActivity extends AppCompatActivity {
                                 // TODO Auto-generated method stub
                                 //String urlpath = "http://pic39.nipic.com/20140226/18071023_164300608000_2.jpg";
                                 Bitmap bm = CollectAdapter.getInternetPicture(url);
-                                Message msg = new Message();
+                                android.os.Message msg = new android.os.Message();
                                 // 把bm存入消息中,发送到主线程
                                 msg.obj = bm;
                                 handler.sendMessage(msg);
@@ -247,16 +253,57 @@ public class SearchActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.friendAdd:
-                    ArrayList<String> list = new ArrayList<>();
-                    list.add("Request");
-                    list.add(Constant.username);
-                    list.add(editText.getText().toString());
-                    list.add("我是"+Constant.username+",能加一下好友吗？");
+                    sendMessage();
+                    //sendMsg();
                     break;
             }
         }
     }
+    private void sendMsg() {
+       // CustomizeMessage customizeMessage = new CustomizeMessage()
+        TextMessage myTextMessage = TextMessage.obtain("自定义安上了飞机爱丽丝");
+        Message myMessage = Message.obtain("tsm",Conversation.ConversationType.GROUP,myTextMessage);
+        RongIM.getInstance().sendMessage(myMessage,"1234984651351",null, new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
 
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
+    }
+    private void sendMessage() {
+        targetId = editText.getText().toString();
+        RichContentMessage richContentMessage = RichContentMessage.obtain("*  添加好友 *","用户："+username + "  请求添加好友",url);
+        Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE,richContentMessage);
+        RongIM.getInstance().sendMessage(message, "  请求添加好友", null, new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(io.rong.imlib.model.Message message) { //存本地数据库
+                //Log.e("aaa","1111111111");
+            }
+
+            @Override
+            public void onSuccess(io.rong.imlib.model.Message message) {
+                //Log.e("aaa","222222");
+                Toast.makeText(SearchActivity.this,"请求发送成功",Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onError(io.rong.imlib.model.Message message, RongIMClient.ErrorCode errorCode) { //发送失败
+                Toast.makeText(SearchActivity.this,"请求发送失败",Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+    }
     private void changeRemark() {
         Constant constant = new Constant();
         map.put("username", username);
