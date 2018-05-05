@@ -29,7 +29,7 @@ class User(Document):
 
 class Tasks(Document):
     taskId = IntField(required=True)
-    byId = StringField(required=None)
+    byId = StringField(required=True)
     context = StringField(default=None)
     contextImg = StringField(default=None)
 

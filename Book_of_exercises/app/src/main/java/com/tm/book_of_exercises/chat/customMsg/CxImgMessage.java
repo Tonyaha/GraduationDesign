@@ -27,11 +27,17 @@ import io.rong.imlib.model.MessageContent;
 @MessageTag(value = "app:CImgMsg",flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
 public class CxImgMessage extends MessageContent{
     //自定义属性
-    private String title;
-    private static String storeName;
-    private static String desc1;
-    private String desc2;
+    private String strData;
 
+    public CxImgMessage(){}
+
+    public static CxImgMessage obtain(String str){
+        CxImgMessage cxImgMessage = new CxImgMessage();
+        cxImgMessage.strData = str;
+        return cxImgMessage;
+    }
+
+    //覆盖父类的 MessageContent(byte[] data) 构造方法，该方法将对收到的消息进行解析，先由 byte 转成 json 字符串，再将 json 中内容取出赋值给消息属性
     public CxImgMessage(byte[] data) {
         String jsonStr = null;
         try {
@@ -43,17 +49,9 @@ public class CxImgMessage extends MessageContent{
         try {
             JSONObject jsonObj = new JSONObject(jsonStr);
 
-            if (jsonObj.has("title"))
-                setTitle(jsonObj.optString("title"));
-
-            if (jsonObj.has("storeName"))
-                setStoreName(jsonObj.optString("storeName"));
-
-            if (jsonObj.has("desc1"))
-                setDesc1(jsonObj.optString("desc1"));
-
-            if (jsonObj.has("desc2"))
-                setDesc2(jsonObj.optString("desc2"));
+            if (jsonObj.has("content")){  //content 是encode（）里面的
+                setStrData(jsonObj.optString("content"));
+            }
 
         } catch (JSONException e) {
             Log.d("JSONException", e.getMessage());
@@ -68,10 +66,7 @@ public class CxImgMessage extends MessageContent{
     public byte[] encode() {
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("title", this.getTitle());
-            jsonObj.put("storeName",this.getStoreName());
-            jsonObj.put("desc1",this.getDesc1());
-            jsonObj.put("desc2",this.getDesc2());
+            jsonObj.put("content", this.getStrData());
 
         } catch (JSONException e) {
             Log.e("JSONException", e.getMessage());
@@ -87,11 +82,7 @@ public class CxImgMessage extends MessageContent{
 
     // 给消息赋值
     public CxImgMessage(Parcel in){
-        setTitle(ParcelUtils.readFromParcel(in));//该类为工具类，消息属性
-        //这里可继续增加你消息的属性
-        setStoreName(ParcelUtils.readFromParcel(in));//该类为工具类，消息属性
-        setDesc1(ParcelUtils.readFromParcel(in));//该类为工具类，消息属性
-        setDesc2(ParcelUtils.readFromParcel(in));//该类为工具类，消息属性
+        setStrData(ParcelUtils.readFromParcel(in));//该类为工具类，消息属性
     }
 
     // 读取接口，目的是要从Parcel中构造一个实现了Parcelable的类的实例处理
@@ -119,41 +110,15 @@ public class CxImgMessage extends MessageContent{
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        ParcelUtils.writeToParcel(dest, getTitle());
-        ParcelUtils.writeToParcel(dest, getStoreName());
-        ParcelUtils.writeToParcel(dest, getDesc1());
-        ParcelUtils.writeToParcel(dest, getDesc2());
+        ParcelUtils.writeToParcel(dest, getStrData());
     }
 
-    public String getTitle() {
-        return title;
+    public String getStrData() {
+        return strData;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setStrData(String strData) {
+        this.strData = strData;
     }
 
-    public static String getStoreName() {
-        return storeName;
-    }
-
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
-    public static String getDesc1() {
-        return desc1;
-    }
-
-    public void setDesc1(String desc1) {
-        this.desc1 = desc1;
-    }
-
-    public String getDesc2() {
-        return desc2;
-    }
-
-    public void setDesc2(String desc2) {
-        this.desc2 = desc2;
-    }
 }

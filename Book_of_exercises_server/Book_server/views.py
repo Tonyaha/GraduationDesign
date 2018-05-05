@@ -345,14 +345,14 @@ def userTasks(request):
 # 保存图片
 def uploadImg(mark, strImg, fileName):
     path = os.getcwd()[:-24] + r'Images/' + mark + '/' + fileName
-    # print(path)
+    #print('//////////',path)
     imageData = base64.b64decode(strImg.replace("\n", ""))
     try:
         with open(path.replace("\\", "/"), 'wb') as f:  # 打开方式：https://www.cnblogs.com/wzjbg/p/6383518.html
             f.write(imageData)
     except:
         return None
-    return 'http://140.143.95.232:8000/images/?mark=' + mark + '&image=' + fileName
+    return 'http://193.112.122.190:8000/images/?mark=' + mark + '&image=' + fileName
 
 
 # 访问图片

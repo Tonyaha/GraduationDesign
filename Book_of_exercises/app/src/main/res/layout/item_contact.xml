@@ -23,7 +23,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@mipmap/ic_launcher"
-                android:padding="10dp" />
+                android:padding="5dp"
+                android:scaleType="fitXY"/>
 
             <TextView
                 android:id="@+id/oneContact"
@@ -32,6 +33,13 @@
                 android:layout_weight="6"
                 android:paddingLeft="5dp"
                 android:text="联系人" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/select_contact"
+                android:src="@mipmap/select_false"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout

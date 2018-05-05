@@ -87,8 +87,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,14 +113,23 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:id="@+id/tasks_collect"
-                android:clickable="true" />
+                android:id="@+id/tasks_see_answer"
+                android:clickable="true"
+                android:src="@mipmap/answer_see"/>
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:src="@mipmap/message"
+                android:id="@+id/tasks_write_answer"
+                android:clickable="true"
+                android:src="@mipmap/answer_write"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:src="@mipmap/message_green"
                 android:id="@+id/img_msg"
                 android:clickable="true" />
         </LinearLayout>

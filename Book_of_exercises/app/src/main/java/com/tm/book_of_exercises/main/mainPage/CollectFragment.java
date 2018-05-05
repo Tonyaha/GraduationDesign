@@ -47,7 +47,7 @@ public class CollectFragment extends Fragment {
 
     private void initData() {
         mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        mAdapter = new CollectAdapter(getActivity(),MainActivity.collectData,R.layout.item_collect_tasks,R.id.tv_task,R.id.task_img,R.id.tasks_collect,R.id.tasks_follow,R.id.tv_msg,R.id.tasks__label,"collect");
+        mAdapter = new CollectAdapter(getActivity(),MainActivity.collectData,R.layout.item_collect_tasks,R.id.tv_task,R.id.task_img,R.id.tasks_see_answer,R.id.tasks_follow,R.id.tv_msg,R.id.tasks__label,"collect");
         mAdapter.mySetOnClickListener(new CollectAdapter.MyOnClickListener() {
             @Override
             public void onViewClickListener(View view, int position) {

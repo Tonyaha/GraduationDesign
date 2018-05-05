@@ -252,12 +252,12 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
                 }
 
                 if ("true".equals(collectFlag)) {
-                    holder.imgCollect.setImageResource(R.mipmap.task_cllect_true);
+                    //holder.imgCollect.setImageResource(R.mipmap.task_cllect_true);
                     holder.mTvLabel.setText("#收藏习题#");
                     holder.mTvFollow.setTextColor(Color.parseColor("#FC2828"));
                     holder.mTvFollow.setText("已关注");
                 } else {
-                    holder.imgCollect.setImageResource(R.mipmap.task_cllect);
+                    //holder.imgCollect.setImageResource(R.mipmap.task_cllect);
                     holder.mTvLabel.setText("#未收藏习题#");
                     holder.mTvFollow.setText("关  注");
                 }
@@ -280,12 +280,12 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
                         if ("true".equals(collectFlag)) {
                             holder.mTvFollow.setTextColor(Color.parseColor("#fc1e2327"));
                             holder.mTvFollow.setText("关  注");
-                            holder.imgCollect.setImageResource(R.mipmap.task_cllect);
+                            //holder.imgCollect.setImageResource(R.mipmap.task_cllect);
                             collectFlag = "false";
                         } else {
                             holder.mTvFollow.setTextColor(Color.parseColor("#FC2828"));
                             holder.mTvFollow.setText("已关注");
-                            holder.imgCollect.setImageResource(R.mipmap.task_cllect_true);
+                            //holder.imgCollect.setImageResource(R.mipmap.task_cllect_true);
                             collectFlag = "true";
                         }
                         int pos = holder.getLayoutPosition();

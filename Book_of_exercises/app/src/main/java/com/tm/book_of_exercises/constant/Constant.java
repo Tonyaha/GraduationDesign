@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.tm.book_of_exercises.MainActivity;
+import com.tm.book_of_exercises.chat.customMsg.CxImgMessage;
 import com.tm.book_of_exercises.http.RetrofitBuilder;
 
 import org.json.JSONException;
@@ -12,6 +14,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,10 +28,12 @@ import retrofit2.Response;
  * Created by T M on 2018/2/9.
  */
 public class Constant{
+    public static String sendData = "";
+    public static boolean showSelectFlag = false;
     public static final int CODE_SELECT_IMAGE = 2;//相册RequestCode
     public static final int TYPE_TAKE_PHOTO = 1;//Uri获取类型判断
     public static final int CODE_TAKE_PHOTO = 1;//相机RequestCode
-    public final String BaseUrl = "http://192.168.137.1:8000";//""http://140.143.95.232:8000";//http://192.168.137.1:8081";
+    public final String BaseUrl = "http://193.112.122.190:8000";//"http://192.168.137.1:8000";//"http://140.143.95.232:8000";//;
     public static String username= "";
     public static Uri uri_admin = Uri.parse("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2619911597,2242133565&fm=27&gp=0.jpg");
 
@@ -32,6 +41,7 @@ public class Constant{
     private HashMap<String, Object> map = new HashMap<>();
     private Context context;
     public Constant(){}
+
     public Constant(Context context){
         this.context = context;
     }
@@ -90,6 +100,30 @@ public class Constant{
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
+            }
+        });
+    }
+
+    //发送自定义消息
+    public void sendMsg(String targetId,String data) {
+        CxImgMessage cxImgMessage = CxImgMessage.obtain(data);
+        Message myMessage = Message.obtain(targetId, Conversation.ConversationType.PRIVATE,cxImgMessage);
+        RongIM.getInstance().sendMessage(myMessage,null,null, new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
+
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                Toast.makeText(context,"发送成功",Toast.LENGTH_LONG).show();
+                sendData = null;
+                MainActivity.selectContactFlag = 0;
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                Toast.makeText(context,"发送失败",Toast.LENGTH_LONG).show();
             }
         });
     }

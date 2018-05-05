@@ -113,15 +113,15 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tv_problem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginTop="10dp"
-            android:text="@string/login_txt_qustion"
-            android:textColor="#7d96cc"
-            android:textSize="14sp" />
+        <!--<TextView-->
+            <!--android:id="@+id/tv_problem"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:text="@string/login_txt_qustion"-->
+            <!--android:textColor="#7d96cc"-->
+            <!--android:textSize="14sp" />-->
     </LinearLayout>
 
     <RelativeLayout

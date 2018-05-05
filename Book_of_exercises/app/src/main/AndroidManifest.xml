@@ -46,6 +46,7 @@
         <activity android:name=".main.otherPage.UserInfo" />
         <activity android:name=".main.otherPage.SearchActivity" />
         <activity android:name=".main.otherPage.TasksActivity" />
+        <activity android:name=".main.otherPage.ShowTasksActivity"/>
 
 
         <!--会话列表-->

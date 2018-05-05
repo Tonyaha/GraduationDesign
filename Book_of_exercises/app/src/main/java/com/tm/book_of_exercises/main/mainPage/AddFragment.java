@@ -30,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.ocr.ui.camera.CameraActivity;
+import com.google.gson.Gson;
+import com.tm.book_of_exercises.MainActivity;
 import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.constant.Constant;
 import com.tm.book_of_exercises.http.RetrofitBuilder;
@@ -42,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -69,6 +72,7 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
     private static final int REQUEST_CODE_ACCURATE_BASIC = 107;
     private String TAG = "AddFragment";
     private boolean floatButton_Opened = false;
+    public static boolean addFragmentSendFlag = false;
 
     @Nullable
     @Override
@@ -82,6 +86,7 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
         floatButton = view.findViewById(R.id.btnSuspension);
         
         floatButton.setOnClickListener(this) ;
+
         return view;//super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -266,7 +271,11 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
                 intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_GENERAL);
                 startActivityForResult(intent, REQUEST_CODE_ACCURATE_BASIC);
                 break;
-            case R.id.send:
+            case R.id.send://注意。一个transaction 只能commit一次，所以不要定义成全局变量
+                MainActivity.selectContactFlag = 1; //表示要选择联系人
+                Constant.sendData = getData();
+                Log.e("iiii", "add    "+String.valueOf(MainActivity.selectContactFlag));
+                MainActivity.viewPager.setCurrentItem(1);
                 break;
             case R.id.save:
                 if (!("").equals(et_content.getText().toString().trim()) | !("null").equals(strBitmap)) {
@@ -300,10 +309,21 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
                 break;
             case R.id.addImg:
                 //ImageHandle.pickAlbum(getActivity(), Constant.CODE_SELECT_IMAGE);
-                Intent intent1 = new Intent(Intent.ACTION_PICK);
-                intent1.setType("image/*");
-                startActivityForResult(intent1, Constant.CODE_SELECT_IMAGE);
+                Intent intent2 = new Intent(Intent.ACTION_PICK);
+                intent2.setType("image/*");
+                startActivityForResult(intent2, Constant.CODE_SELECT_IMAGE);
                 break;
         }
+    }
+
+    private String getData(){
+        HashMap<String,String> map = new HashMap<>();
+        map.put("from","notFromAddFragment");
+        map.put("content",et_content.getText().toString());
+        map.put("imgUri","");//strBitmap);
+        ArrayList<HashMap> list = new ArrayList<>();
+        list.add(map);
+        Gson gson = new Gson();
+        return gson.toJson(list);
     }
 }

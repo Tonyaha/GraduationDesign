@@ -50,6 +50,7 @@ import retrofit2.Response;
 import static com.tm.book_of_exercises.constant.Constant.username;
 
 public class MainActivity extends FragmentActivity implements RongIM.UserInfoProvider {
+    public static int selectContactFlag = 0; //0 表示不选择联系人 1表示选择
     protected static final String TAG = "MainActivity";
     private long firstTime = 0;
     private boolean hasGotToken = false;
@@ -59,7 +60,7 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
     public static JSONObject jsonObject;
     private List<Fragment> fragments;
     private RadioGroup radioGroup;
-    private ViewPager viewPager;
+    public static ViewPager viewPager;
 
     private ImageView imageView;
 
@@ -67,6 +68,7 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
     private Fragment mConversationFragment = null;
     private List<Friend> userIdList;
     public static ArrayList<String> data = new ArrayList<>();
+    public static ArrayList<JSONObject> contactData = new ArrayList<>();
     public static ArrayList<JSONObject> collectData = new ArrayList<>();
     public static ArrayList<JSONObject> allTasksData = new ArrayList<>();
 
@@ -102,6 +104,7 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
         fragments.add(meFragment);
 
         viewPager = findViewById(R.id.viewPage);
+        //viewPager.setOffscreenPageLimit(1); //限制缓存的fragment个数 后续需要完善
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -338,16 +341,17 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject job = jsonArray.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
                             //System.out.println(job.get("username")+"=//////////") ;  // 得到 每个对象中的属性值
-                            String remark = job.getString("remark");
-                            String nickname = job.getString("nickname");
-
-                            //System.out.println("///////////" + remark + "     " + nickname);
-                            //data.add(job.getString("remark"));
-                            if ("null".equals(remark)) {  //换了很多种写法.......
-                                data.add(nickname);
-                            } else {
-                                data.add(remark);
-                            }
+                            contactData.add(job);
+//                            String remark = job.getString("remark");
+//                            String nickname = job.getString("nickname");
+//
+//                            //System.out.println("///////////" + remark + "     " + nickname);
+//                            //data.add(job.getString("remark"));
+//                            if ("null".equals(remark)) {  //换了很多种写法.......
+//                                data.add(nickname);
+//                            } else {
+//                                data.add(remark);
+//                            }
                         }
                     }
                     //System.out.println("///////////" + data);
@@ -427,6 +431,7 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
+                    //Log.e("yyyyy",response.body().string());
                     //System.out.println("////////////" + response.body().string());
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     String code = jsonObject.getString("code");

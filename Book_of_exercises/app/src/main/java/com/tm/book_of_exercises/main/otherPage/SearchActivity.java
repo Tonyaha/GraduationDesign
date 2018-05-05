@@ -35,7 +35,6 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.message.RichContentMessage;
-import io.rong.message.TextMessage;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -253,37 +252,15 @@ public class SearchActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.friendAdd:
-                    sendMessage();
-                    //sendMsg();
+                    targetId = editText.getText().toString();
+                    sendMessage(targetId);
                     break;
             }
         }
     }
-    private void sendMsg() {
-       // CustomizeMessage customizeMessage = new CustomizeMessage()
-        TextMessage myTextMessage = TextMessage.obtain("自定义安上了飞机爱丽丝");
-        Message myMessage = Message.obtain("tsm",Conversation.ConversationType.GROUP,myTextMessage);
-        RongIM.getInstance().sendMessage(myMessage,"1234984651351",null, new IRongCallback.ISendMessageCallback() {
-            @Override
-            public void onAttached(Message message) {
-
-            }
-
-            @Override
-            public void onSuccess(Message message) {
-
-            }
-
-            @Override
-            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-
-            }
-        });
-    }
-    private void sendMessage() {
-        targetId = editText.getText().toString();
+    private void sendMessage(String id) {
         RichContentMessage richContentMessage = RichContentMessage.obtain("*  添加好友 *","用户："+username + "  请求添加好友",url);
-        Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE,richContentMessage);
+        Message message = Message.obtain(id, Conversation.ConversationType.PRIVATE,richContentMessage);
         RongIM.getInstance().sendMessage(message, "  请求添加好友", null, new IRongCallback.ISendMessageCallback() {
             @Override
             public void onAttached(io.rong.imlib.model.Message message) { //存本地数据库

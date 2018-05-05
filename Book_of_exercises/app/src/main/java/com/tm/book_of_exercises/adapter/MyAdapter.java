@@ -1,5 +1,6 @@
 package com.tm.book_of_exercises.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tm.book_of_exercises.R;
+import com.tm.book_of_exercises.constant.Constant;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -16,31 +22,18 @@ import java.util.ArrayList;
  */
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private ArrayList<String> mData;
-    private int xmlItem; //item文件 .xml
-    private int textViewId; //item中显示文字的 text
-    private int imgViewId; //item 中显示图片的imageView
-
-    private int tvMsgID;
+    private ArrayList<JSONObject> mData;
+    private Context context;
     /**
      * 事件回调监听
      */
     public MyAdapter.OnItemClickListener onItemClickListener;
 
-    public MyAdapter(ArrayList<String> data,int xmlItemId,int textId,int imgId){
+    public MyAdapter(Context context,ArrayList<JSONObject> data){
         this.mData = data;
-        this.xmlItem = xmlItemId;
-        this.imgViewId = imgId;
-        this.textViewId = textId;
+        this.context = context;
     }
-    public MyAdapter(ArrayList<String> data,int xmlItemId,int textId,int imgId,int tvMsgId){
-        this.mData = data;
-        this.xmlItem = xmlItemId;
-        this.imgViewId = imgId;
-        this.textViewId = textId;
-        this.tvMsgID = tvMsgId;
-    }
-    public void updateData(ArrayList<String> data){
+    public void updateData(ArrayList<JSONObject> data){
         this.mData = data;
         notifyDataSetChanged();
     }
@@ -48,7 +41,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // 实例化展示的View
-        View view = LayoutInflater.from(parent.getContext()).inflate(xmlItem,parent,false); //item 布局文件xml
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact,parent,false); //item 布局文件xml
         //parent.removeAllViews();//去除重复数据
         // 实例化 ViewHolder
         ViewHolder viewHolder = new ViewHolder(view);
@@ -57,9 +50,36 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if(Constant.showSelectFlag){
+            holder.select.setVisibility(View.VISIBLE);
+        }else {
+            holder.select.setVisibility(View.GONE);
+        }
         // 绑定数据
-        holder.mTv.setText(mData.get(position));
+        JSONObject jsonObject = mData.get(position);
+        try {
+            if("null".equals(jsonObject.getString("remark"))){
+                holder.mTv.setText(jsonObject.getString("nickname"));
+            }else {
+                holder.mTv.setText(jsonObject.getString("remark"));
+            }
+            Glide.with(context)
+                    .load(jsonObject.getString("icon"))
+                    .into(holder.img);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         //holder.img.setText(mData.get(position));
+        holder.select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClickListener != null) {
+                    int pos = holder.getLayoutPosition();
+                    onItemClickListener.onItemClick(holder.select, pos);
+                }
+            }
+        });
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -75,7 +95,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public boolean onLongClick(View v) {
                 if(onItemClickListener != null) {
                     int pos = holder.getLayoutPosition();
-                    onItemClickListener.onItemLongClick(holder.itemView, pos);
+                    onItemClickListener.onItemLongClick(holder.itemView, mData);
                 }
                 //表示此事件已经消费，不会触发单击事件
                 return true;
@@ -90,31 +110,32 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTv;
-        ImageView img;
+        ImageView img,select;
         public ViewHolder(View itemView) {
             super(itemView);
-            mTv = itemView.findViewById(textViewId); //(R.id.oneContact);
-            img = itemView.findViewById(imgViewId);
+            mTv = itemView.findViewById(R.id.oneContact); //(R.id.oneContact);
+            img = itemView.findViewById(R.id.oneContactImg);
+            select = itemView.findViewById(R.id.select_contact);
         }
     }
 
-    // 添加item
-    public void addNewItem(){
-        if(mData == null){
-            mData = new ArrayList<>();
-        }
-        mData.add(0,"new item");
-        notifyItemInserted(0);
-    }
-
-    //删除item
-    public void deletItem(){
-        if(mData == null || mData.isEmpty()){
-            return;
-        }
-        mData.remove(0);
-        notifyItemRemoved(0);
-    }
+//    // 添加item
+//    public void addNewItem(){
+//        if(mData == null){
+//            mData = new ArrayList<>();
+//        }
+//        mData.add(0,"new item");
+//        notifyItemInserted(0);
+//    }
+//
+//    //删除item
+//    public void deletItem(){
+//        if(mData == null || mData.isEmpty()){
+//            return;
+//        }
+//        mData.remove(0);
+//        notifyItemRemoved(0);
+//    }
 
     /**
      * 设置回调监听
@@ -127,7 +148,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-        void onItemLongClick(View view, int position);
+        void onItemLongClick(View view, ArrayList<JSONObject> mData);
     }
 
 }

@@ -17,6 +17,7 @@ public class ConversationActivity extends AppCompatActivity {
 
     @ViewInject(R.id.tv_friend)
     private TextView tv_bar;
+    public static Context context;
 
     public Context getContext() {
         return this;
@@ -26,7 +27,7 @@ public class ConversationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation);
         AnnotateUtils.injectViews(this);
-
+        context = ConversationActivity.this;
         /**
          * 启动单聊
          * context - 应用上下文。

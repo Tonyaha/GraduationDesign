@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 import com.tm.book_of_exercises.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
-import io.rong.imlib.model.Message;
 
 /**
  * 作者：T M on 2018/4/13 23:23
@@ -34,22 +37,50 @@ public class CxImgItemProvider extends IContainerItemProvider.MessageProvider<Cx
     public void bindView(View view, int i, CxImgMessage cxImgMessage, UIMessage message) {
         //根据需求，适配数据
         ViewHolder holder = (ViewHolder) view.getTag();
+        try {
+            JSONArray jsonArray = new JSONArray(cxImgMessage.getStrData());
+            JSONObject jb = jsonArray.getJSONObject(0);
+            holder.tvContent.setText(jb.getString("content"));
+//            if("notFromAddFragment".equals(jb.getString("from"))){
+//                Glide.with(ConversationActivity.context)
+//                        .load(jb.getString("imgUri"))
+//                        .into(holder.imgContent);
+//            }else {
+//                holder.imgContent.setImageBitmap(ImageHandle.stringToImage(jb.getString("imgUri")));
+//            }
 
-        if (message.getMessageDirection() == Message.MessageDirection.SEND) {//消息方向，自己发送的
-            //holder.message.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_right);
-        } else {
-            //holder.message.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_left);
+            //holder.imgContent.setImageResource(R.drawable.ic_launcher);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+
+        //if (message.getMessageDirection() == Message.MessageDirection.SEND) {//消息方向，自己发送的
+            //holder.message.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_right);
+        //} else {
+            //holder.message.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_left);
+       // }
         //AndroidEmoji.ensure((Spannable) holder.message.getText());//显示消息中的 Emoji 表情。
         //holder.tvTitle.setText(redPackageMessage.getTitle());
-        holder.tvStoreName.setText(CxImgMessage.getStoreName());
+        //holder.tvStoreName.setText(CxImgMessage.getStoreName());
         //holder.tvDesc1.setText(redPackageMessage.getDesc1());
         //holder.tvDesc2.setText(redPackageMessage.getDesc2());
     }
 
     @Override
     public Spannable getContentSummary(CxImgMessage cxImgMessage) {
-        return new SpannableString(CxImgMessage.getDesc1());
+        String notice = "";
+        try {
+            JSONArray jsonArray = new JSONArray(cxImgMessage.getStrData());
+            if(jsonArray.length() > 0){
+                JSONObject jb = jsonArray.getJSONObject(0);
+                notice = jb.getString("content");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new SpannableString(notice);//CxImgMessage.getDesc1()
     }
 
     @Override
@@ -67,7 +98,7 @@ public class CxImgItemProvider extends IContainerItemProvider.MessageProvider<Cx
 //            public void onOptionsItemClicked(int which) {
 //                if (which == 0) {
 //                    ClipboardManager clipboard = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-//                    clipboard.setText(content.getContent());//这里是自定义消息的消息属性
+//                    clipboard.setText(cxImgMessage.getStrData());//这里是自定义消息的消息属性
 //                } else if (which == 1) {
 //                    RongIM.getInstance().deleteMessages(new int[]{message.getMessageId()}, (RongIMClient.ResultCallback) null);
 //                }
@@ -79,17 +110,16 @@ public class CxImgItemProvider extends IContainerItemProvider.MessageProvider<Cx
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
         //这就是展示在会话界面的自定义的消息的布局
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_for_chat, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_img_msg_layout, null);
         ViewHolder holder = new ViewHolder();
-        holder.tvTitle = (TextView) view.findViewById(R.id.tv_title);
-        holder.tvStoreName = (TextView) view.findViewById(R.id.tv_store_name);
-        holder.tvDesc1 = (TextView) view.findViewById(R.id.tv_desc1);
-        holder.tvDesc2 = (TextView) view.findViewById(R.id.tv_desc2);
+        holder.tvContent = view.findViewById(R.id.tv_content);
+        //holder.imgContent = view.findViewById(R.id.img_content);
         view.setTag(holder);
         return view;
     }
 
     private static class ViewHolder {
-        TextView tvTitle, tvStoreName, tvDesc1, tvDesc2;
+        private TextView tvContent;
+        //private ImageView imgContent;
     }
 }

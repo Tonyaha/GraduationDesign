@@ -4,10 +4,16 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
-import com.tm.book_of_exercises.chat.customMsg.MyConversationBehaviorListener;
-import com.tm.book_of_exercises.chat.test.CustomizeMessage;
-import com.tm.book_of_exercises.chat.test.CustomizeMessageItemProvider;
+import com.tm.book_of_exercises.chat.customMsg.CxImgItemProvider;
+import com.tm.book_of_exercises.chat.customMsg.CxImgMessage;
+import com.tm.book_of_exercises.chat.customMsg.MyConversationClickListener;
+import com.tm.book_of_exercises.chat.plugin.ExtensionModule;
 
+import java.util.List;
+
+import io.rong.imkit.DefaultExtensionModule;
+import io.rong.imkit.IExtensionModule;
+import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 
 /**
@@ -29,19 +35,38 @@ public class App extends Application {
              */
             RongIM.init(this);
             //注意，要在初始化之后注册
-//            RongIM.registerMessageType(CxImgMessage.class);
-//            RongIM.registerMessageTemplate(new CxImgItemProvider());
-            RongIM.registerMessageType(CustomizeMessage.class);
-            RongIM.getInstance().registerMessageTemplate(new CustomizeMessageItemProvider());
+            RongIM.registerMessageType(CxImgMessage.class);
+            RongIM.registerMessageTemplate(new CxImgItemProvider());
 
             /**
              * 设置会话界面操作的监听器。
              */
-            RongIM.setConversationBehaviorListener(new MyConversationBehaviorListener());
+            RongIM.setConversationBehaviorListener(new MyConversationClickListener());
 
             // 发送消息监听
             RongIM.getInstance().setSendMessageListener(new MySendMessageListener());
 
+
+            //在初始化之后，取消 SDK 默认的 ExtensionModule，注册自定义的 ExtensionModule，
+            //setMyExtensionModule();
+
+        }
+    }
+
+    public void setMyExtensionModule() {
+        List<IExtensionModule> moduleList = RongExtensionManager.getInstance().getExtensionModules();
+        IExtensionModule defaultModule = null;
+        if (moduleList != null) {
+            for (IExtensionModule module : moduleList) {
+                if (module instanceof DefaultExtensionModule) {
+                    defaultModule = module;
+                    break;
+                }
+            }
+            if (defaultModule != null) {
+                RongExtensionManager.getInstance().unregisterExtensionModule(defaultModule);
+                RongExtensionManager.getInstance().registerExtensionModule(new ExtensionModule());
+            }
         }
     }
 
