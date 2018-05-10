@@ -24,19 +24,6 @@
             android:textStyle="bold"/>
 
         <RadioButton
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="保    存"
-            android:textSize="12dp"
-            android:button="@null"
-            android:checked="false"
-            android:textColor="@drawable/trade_bottom_text"
-            android:drawableRight="@drawable/trade_add_menu"
-            android:id="@+id/save"
-            android:textStyle="bold"/>
-
-        <RadioButton
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
@@ -66,6 +53,32 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
+            android:text="添答案"
+            android:textSize="12dp"
+            android:button="@null"
+            android:checked="false"
+            android:textColor="@drawable/trade_bottom_text"
+            android:drawableRight="@drawable/trade_add_menu"
+            android:id="@+id/answer"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="保    存"
+            android:textSize="12dp"
+            android:button="@null"
+            android:checked="false"
+            android:textColor="@drawable/trade_bottom_text"
+            android:drawableRight="@drawable/trade_add_menu"
+            android:id="@+id/save"
+            android:textStyle="bold"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
             android:text="发    送"
             android:textSize="12dp"
             android:button="@null"
@@ -74,5 +87,6 @@
             android:drawableRight="@drawable/trade_add_menu"
             android:id="@+id/send"
             android:textStyle="bold" />
+
     </RadioGroup>
 </LinearLayout>

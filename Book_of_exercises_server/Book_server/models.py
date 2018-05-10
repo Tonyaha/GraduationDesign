@@ -32,5 +32,6 @@ class Tasks(Document):
     byId = StringField(required=True)
     context = StringField(default=None)
     contextImg = StringField(default=None)
+    answerImg = StringField(default=None)
 
 

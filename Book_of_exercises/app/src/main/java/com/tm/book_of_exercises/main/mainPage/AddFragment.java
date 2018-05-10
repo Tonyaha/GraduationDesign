@@ -6,10 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -36,6 +38,7 @@ import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.constant.Constant;
 import com.tm.book_of_exercises.http.RetrofitBuilder;
 import com.tm.book_of_exercises.main.bean.ImageHandle;
+import com.tm.book_of_exercises.main.otherPage.SelectContactActivity;
 import com.tm.book_of_exercises.orc.FileUtil;
 import com.tm.book_of_exercises.orc.RecognizeService;
 
@@ -43,6 +46,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,17 +68,25 @@ import static com.tm.book_of_exercises.main.bean.ImageHandle.bitmapToString;
 
 public class AddFragment extends Fragment implements View.OnClickListener,RadioGroup.OnCheckedChangeListener{
     private TextView tv_notice;
-    private ImageView selectImg;
+    private ImageView selectImg,imgAnswer;
     private EditText et_content;
     private FloatingActionButton floatButton;
     private RadioGroup radioGroup;
 
     private Bitmap prodImg;
-    private String strBitmap = "null";
+    private String strBitmap = "";
+    private Bitmap prodImgA;
+    private String strAnswer = "";
     private static final int REQUEST_CODE_ACCURATE_BASIC = 107;
     private String TAG = "AddFragment";
     private boolean floatButton_Opened = false;
     public static boolean addFragmentSendFlag = false;
+    private String mFilePath;
+
+    private int taskId = 0;
+    private String contextImg = "";
+    private String answer = "";
+    private String occupation = "";
 
     @Nullable
     @Override
@@ -81,11 +95,15 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
         tv_notice = view.findViewById(R.id.tv_notice);
         tv_notice.setSelected(true);
 
+        imgAnswer = view.findViewById(R.id.selectImageAnswer);
         selectImg = view.findViewById(R.id.selectImage);
         et_content = view.findViewById(R.id.selectTv);
         floatButton = view.findViewById(R.id.btnSuspension);
         
         floatButton.setOnClickListener(this) ;
+
+        mFilePath = Environment.getExternalStorageDirectory().getPath();// 获取SD卡路径
+        mFilePath = mFilePath + "/" + "answer.png";// 指定路径
 
         return view;//super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -142,16 +160,56 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
                     }
                 }
                 break;
+            case Constant.CODE_SELECT_IMAGE_Add:
+                if (data != null) {
+                    String imagePath = null;//String.valueOf(getActivity().getResources().getDrawable(R.mipmap.icon));
+                    try {
+                        Uri uri = data.getData();
+                        String[] filePathColumns = {MediaStore.Images.Media.DATA};
+                        Cursor c = getActivity().getContentResolver().query(uri , filePathColumns,null,null,null);
+                        Objects.requireNonNull(c).moveToFirst();
+                        int columnIndex = c.getColumnIndex(filePathColumns[0]);
+                        imagePath = c.getString(columnIndex);
+                        c.close();
+                    }catch (NullPointerException e){
+                        Log.e("选择图片出现异常",e.getMessage());
+                    }
+                    if (prodImgA != null)//如果不释放的话，不断取图片，将会内存不够
+                        prodImgA.recycle();
+                    prodImgA = ImageHandle.getBitmap(imagePath);
+                    if (prodImgA != null) {
+                        imgAnswer.setImageBitmap(prodImgA);
+                        strAnswer = bitmapToString(ImageHandle.compressScale(prodImgA));
+                    }
+                }
+                break;
+            case Constant.CODE_TAKE_PHOTO:
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(mFilePath); // 根据路径获取数据
+                    Bitmap bitmap = ImageHandle.compressScale(BitmapFactory.decodeStream(fis)); //已经按质量压缩
+                    imgAnswer.setImageBitmap(bitmap);// 显示图片
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        fis.close();// 关闭流
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }
     }
 
-    private void saveTasks(String tag) {
+    public void saveTasks(String tag) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("username", Constant.username);
         map.put("action", "save");
         map.put("content", et_content.getText().toString());
         map.put("image", strBitmap);
         map.put("tag", tag);
+        map.put("answer", strAnswer);
         RetrofitBuilder builder = new RetrofitBuilder(new Constant().BaseUrl + "/api/save/");
         builder.isConnected(getActivity());
         builder.params(map);
@@ -163,11 +221,19 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
                 try {
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     Toast.makeText(getActivity(),jsonObject.getString("msg"),Toast.LENGTH_LONG).show();
+                    contextImg = jsonObject.getString("contextImg");
+                    taskId = jsonObject.getInt("taskId");
+                    answer = jsonObject.getString("answer");
+                    occupation = jsonObject.getString("occupation");
+                    //Log.e("add111",taskId+ "/////" +occupation+"/////" +contextImg+"/////" +answer);
+                    Toast.makeText(getActivity(),jsonObject.getString("msg"),Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                MainActivity.updateFlag = true;
+                MainActivity.updateCollectFlag = true;
             }
 
             //请求失败时回调
@@ -272,10 +338,13 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
                 startActivityForResult(intent, REQUEST_CODE_ACCURATE_BASIC);
                 break;
             case R.id.send://注意。一个transaction 只能commit一次，所以不要定义成全局变量
-                MainActivity.selectContactFlag = 1; //表示要选择联系人
-                Constant.sendData = getData();
-                Log.e("iiii", "add    "+String.valueOf(MainActivity.selectContactFlag));
-                MainActivity.viewPager.setCurrentItem(1);
+//                MainActivity.selectContactFlag = 1; //表示要选择联系人
+//                Constant.sendData = getData();
+//                MainActivity.viewPager.setCurrentItem(1);
+                saveTasks("true");
+                Intent intentSend = new Intent(getActivity(), SelectContactActivity.class);
+                intentSend.putExtra("data",getData());
+                startActivity(intentSend);
                 break;
             case R.id.save:
                 if (!("").equals(et_content.getText().toString().trim()) | !("null").equals(strBitmap)) {
@@ -313,6 +382,37 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
                 intent2.setType("image/*");
                 startActivityForResult(intent2, Constant.CODE_SELECT_IMAGE);
                 break;
+            case R.id.answer:
+                //Toast.makeText(getActivity(),"daan ",Toast.LENGTH_LONG).show();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                alertDialog.setTitle("选择图片")
+                        .setIcon(R.mipmap.icon)
+                        .setMessage("选择一种获取答案的方式")
+                        .setCancelable(true);
+
+                alertDialog.setPositiveButton("照相", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //启动相机程序
+                        Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        Uri photoUri = Uri.fromFile(new File(mFilePath)); // 传递路径
+                        takePhoto.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);  //设置自定义拍照保存的临时路径 ,//指定图片存放位置，指定后，在onActivityResult里得到的Data将为null
+                        startActivityForResult(takePhoto, Constant.CODE_TAKE_PHOTO);
+                        dialogInterface.cancel();
+                    }
+                });
+                alertDialog.setNegativeButton("相册", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent selectFromPhotos = new Intent(Intent.ACTION_PICK);
+                        //takePhoto.putExtra(MediaStore.EXTRA_OUTPUT, imgUriSelect);  //设置自定义拍照保存的临时路径 ,//指定图片存放位置，指定后，在onActivityResult里得到的Data将为null
+                        selectFromPhotos.setType("image/*");
+                        startActivityForResult(selectFromPhotos, Constant.CODE_SELECT_IMAGE_Add);
+                        dialogInterface.cancel();
+                    }
+                });
+                alertDialog.show();
+                break;
         }
     }
 
@@ -320,7 +420,11 @@ public class AddFragment extends Fragment implements View.OnClickListener,RadioG
         HashMap<String,String> map = new HashMap<>();
         map.put("from","notFromAddFragment");
         map.put("content",et_content.getText().toString());
-        map.put("imgUri","");//strBitmap);
+        map.put("imgUri",contextImg);//strBitmap);
+        map.put("taskId", String.valueOf(taskId));
+        map.put("answer",answer);
+        map.put("myAnswer","");
+        map.put("occupation",occupation);
         ArrayList<HashMap> list = new ArrayList<>();
         list.add(map);
         Gson gson = new Gson();

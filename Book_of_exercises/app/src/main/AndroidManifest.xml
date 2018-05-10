@@ -46,7 +46,8 @@
         <activity android:name=".main.otherPage.UserInfo" />
         <activity android:name=".main.otherPage.SearchActivity" />
         <activity android:name=".main.otherPage.TasksActivity" />
-        <activity android:name=".main.otherPage.ShowTasksActivity"/>
+        <activity android:name=".main.otherPage.ReceivedTasksActivity"/>
+        <activity android:name=".main.otherPage.SelectContactActivity"/>
 
 
         <!--会话列表-->

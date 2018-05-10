@@ -20,13 +20,23 @@ import com.tm.book_of_exercises.MainActivity;
 import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.adapter.MyAdapter;
 import com.tm.book_of_exercises.constant.Constant;
+import com.tm.book_of_exercises.http.RetrofitBuilder;
 import com.tm.book_of_exercises.main.otherPage.SearchActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.tm.book_of_exercises.constant.Constant.username;
 
 /**
  * Created by T M on 2018/3/14.
@@ -50,6 +60,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact,container,false);
         initData();  // 初始化在前面，不然提示 E/RecyclerView: No adapter attached; skipping layout
+        if (MainActivity.updateContactFlag){
+            getFriendList();
+        }
+
         initView(view);
         initClick();
         //AnnotateUtils.injectViews(getActivity());
@@ -98,6 +112,12 @@ public class ContactFragment extends Fragment implements View.OnClickListener{
     private void initData() {
         mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         mAdapter = new MyAdapter(getActivity(),MainActivity.contactData);
+        //mAdapter.updateData(MainActivity.contactData);
+//        if("".equals(MainActivity.contactData) || MainActivity.contactData == null || "null".equals(MainActivity.contactData)){
+//
+//        }else {
+//            mAdapter.updateData(Constant.kongData);
+//        }
 
         mAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override
@@ -174,6 +194,58 @@ public class ContactFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    public void getFriendList() {
+        ArrayList<JSONObject> data_ = new ArrayList<>();
+        HashMap<String, Object> map = new HashMap<>();
+        Constant constant = new Constant();
+        map.put("username", username);
+        map.put("action", "listOfFriend");
+        RetrofitBuilder retrofitBuilder = new RetrofitBuilder(constant.BaseUrl + "/userInfo/");
+        //retrofitBuilder.isConnected(this);
+        retrofitBuilder.params(map);
+        retrofitBuilder.get();
+        Call<ResponseBody> call = retrofitBuilder.getCall();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    //System.out.println("///////////" + response.body().string());
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    if ("200".equals(jsonObject.getString("code"))) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("list");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject job = jsonArray.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                            //System.out.println(job.get("username")+"=//////////") ;  // 得到 每个对象中的属性值
+                            data_.add(job);
+//                            String remark = job.getString("remark");
+//                            String nickname = job.getString("nickname");
+//
+//                            //System.out.println("///////////" + remark + "     " + nickname);
+//                            //data.add(job.getString("remark"));
+//                            if ("null".equals(remark)) {  //换了很多种写法.......
+//                                data.add(nickname);
+//                            } else {
+//                                data.add(remark);
+//                            }
+                        }
+                    }
+                    mAdapter.updateData(data_);
+                    //System.out.println("///////////" + data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //请求失败时回调
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                //Toast.makeText(MainActivity.this, getBaseContext().getResources().getText(R.string.connect_to_server), Toast.LENGTH_LONG).show();
+                //System.out.println(throwable.getMessage());
+            }
+        });
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

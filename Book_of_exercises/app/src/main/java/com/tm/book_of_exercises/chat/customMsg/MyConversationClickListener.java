@@ -7,8 +7,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.tm.book_of_exercises.constant.Constant;
+import com.tm.book_of_exercises.main.otherPage.ReceivedTasksActivity;
 import com.tm.book_of_exercises.main.otherPage.SearchActivity;
-import com.tm.book_of_exercises.main.otherPage.ShowTasksActivity;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
@@ -82,7 +82,7 @@ public class MyConversationClickListener implements RongIM.ConversationBehaviorL
             return true;
         }else if("app:CImgMsg".equals(message.getObjectName())){
             CxImgMessage cxImgMessage = (CxImgMessage) message.getContent();
-            Intent intent = new Intent(context, ShowTasksActivity.class);
+            Intent intent = new Intent(context, ReceivedTasksActivity.class);
             intent.putExtra("tasks",cxImgMessage.getStrData());
             //Log.e("aaa",cxImgMessage.getStrData());
             context.startActivity(intent);

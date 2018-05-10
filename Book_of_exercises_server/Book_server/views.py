@@ -259,20 +259,38 @@ def userTasks(request):
                 infoList = []
                 for itemDict in user.tasks_collect:
                     info = {}
-                    task = Tasks.objects.filter(taskId=itemDict['taskId']).first()
+                    task = Tasks.objects(taskId=itemDict['taskId']).first()
                     info['taskId'] = itemDict['taskId']
-                    info['context'] = task.context
-                    info['byId'] = task.byId
+                    if task.context:
+                        info['context'] = task.context
+                    else:
+                        info['context'] = ""
+                    # if 'myAnswer' in itemDict:
+                    #     if itemDict["myAnswer"] != '':
+                    #         info["myAnswer"] = itemDict["myAnswer"]
+                    #     else:
+                    #         info["myAnswer"] = ''
+                    # else:
+                    #     info["myAnswer"] = ''
+                    info["myAnswer"] = ''
+                    if task.byId:
+                        info['byId'] = task.byId
+                    else:
+                        info['byId'] = 'admin'
+                    if task.answerImg and task.answerImg != '':
+                        info["answer"] = task.answerImg
+                    else:
+                        info["answer"] = ''
                     if task.contextImg or (task.contextImg != ""):
                         info['contextImg'] = task.contextImg
                     else:
-                        info['contextImg'] = "null"
+                        info['contextImg'] = ""
                     info['msg'] = itemDict['msg']  # 不能用if itemDict['msg']:
                     info['collectFlag'] = 'true'
                     infoList.append(info)
-                return HttpResponse(json.dumps({'code': '200', 'list': infoList}), content_type="application/json")
+                return HttpResponse(json.dumps({'code': '200','occupation':user.occupation, 'list': infoList}), content_type="application/json")
             else:
-                return HttpResponse(json.dumps({'code': '404', 'msg': "没有收藏信息"}), content_type="application/json")
+                return HttpResponse(json.dumps({'code': '404','occupation':user.occupation, 'msg': "没有收藏信息"}), content_type="application/json")
         elif action == 'allTasks':
             if Tasks.objects:
                 listId = []
@@ -283,19 +301,19 @@ def userTasks(request):
                 for item in Tasks.objects:
                     taskDict = {}
                     if item.taskId in listId:
-                        if item.contextImg or (item.contextImg != ""):
+                        if item.contextImg:
                             taskDict = {"taskId": item.taskId, 'context': item.context, "contextImg": item.contextImg,
-                                        'collectFlag': 'true','byId' : item.byId}
+                                        'collectFlag': 'true','byId' : item.byId,'answer':item.answerImg}
                         else:
-                            taskDict = {"taskId": item.taskId, 'context': item.context, "contextImg": "null",
-                                        'collectFlag': 'true','byId' : item.byId}
+                            taskDict = {"taskId": item.taskId, 'context': item.context, "contextImg": "",
+                                        'collectFlag': 'true','byId' : item.byId,'answer':item.answerImg}
                     else:
-                        if item.contextImg or (item.contextImg != ""):
-                            taskDict = {"taskId": item.taskId, 'context': item.context, "contextImg": item.contextImg,
-                                        'collectFlag': 'false','byId' : item.byId}
+                        if not item.contextImg:
+                            taskDict = {"taskId": item.taskId, 'context': item.context, "contextImg": "",
+                                        'collectFlag': 'false','byId' : item.byId,'answer':item.answerImg}
                         else:
-                            taskDict = {"taskId": item.taskId, 'context': item.context, "contextImg": "null",
-                                        'collectFlag': 'false','byId' : item.byId}
+                            taskDict = {"taskId": item.taskId, 'context': item.context, "contextImg": "",
+                                        'collectFlag': 'false','byId' : item.byId,'answer':item.answerImg}
                     list.append(taskDict)
                 return HttpResponse(json.dumps({'code': '200', 'list': list}), content_type="application/json")
             else:
@@ -305,13 +323,28 @@ def userTasks(request):
         action = request.POST.get('action')
         user = User.objects(username=user_name).first()
         if action == 'modifyCollect':
+            myAnswerUri = ''
             isFollow = request.POST.get('isFollow')
             id = int(request.POST.get('taskId'))
             msg = request.POST.get('msg')
+            myAnswer = request.POST.get("answer")
             list_collect = []
             existList = []
-            if not user.tasks_collect or (len(user.tasks_collect) < 1):
-                list_collect.append({"taskId": id, "msg": msg})
+            if not user.tasks_collect or user.tasks_collect == '':
+                dict_c ={}
+                if isFollow == '已关注':
+                    if myAnswer != '' or myAnswer != 'null':
+                        if user.occupation == '教师' or user.occupation != '学生':
+                            myAnswerUri = uploadImg('tasks', myAnswer,
+                                                    'jiaoshi_' + str(id) + '_answer_img_by_tm' + '.jpeg')
+                            Tasks.objects(taskId=id).update(answerImg=myAnswerUri)
+                        else:
+                            myAnswerUri = uploadImg("tasks", myAnswer, user_name + '_task_' + str(id) + '_answer.jpeg')
+                            dict_c['myAnswer'] = myAnswerUri
+                    dict_c['taskId'] = id
+                    if msg != '' or msg != 'null':
+                        dict_c['msg'] = msg
+                    list_collect.append(dict_c)
             else:
                 for item in user.tasks_collect:
                     existList.append(item['taskId'])
@@ -324,10 +357,24 @@ def userTasks(request):
                         dict_c = {}
                         if collectDict['taskId'] == id:
                             if isFollow == '已关注':
+                                if myAnswer != '' or myAnswer != 'null':
+                                    if user.occupation == '教师' or user.occupation != '学生':
+                                        myAnswerUri = uploadImg('tasks', myAnswer,'jiaoshi_' + str(id) + '_answer_img_by_tm' + '.jpeg')
+                                        Tasks.objects(taskId=id).update(answerImg= myAnswerUri)
+                                    else:
+                                        myAnswerUri = uploadImg("tasks",myAnswer,user_name + '_task_' + str(id) + '_answer.jpeg')
+                                        dict_c['myAnswer'] = myAnswerUri
                                 dict_c['taskId'] = id
-                                dict_c['msg'] = msg
+                                if msg != '' or msg != 'null':
+                                    dict_c['msg'] = msg
+                                else:
+                                    dict_c['msg'] = collectDict['msg']
                                 list_collect.append(dict_c)
                             else:
+                                if myAnswer != '' or myAnswer != 'null':
+                                    if user.occupation == '教师' or user.occupation != '学生':
+                                        myAnswerUri = uploadImg('tasks', myAnswer,'jiaoshi_' + str(id) + '_answer_img_by_tm' + '.jpeg')
+                                        Tasks.objects(taskId=id).update(answerImg= myAnswerUri)
                                 continue
                         else:
                             list_collect.append(collectDict)
@@ -338,8 +385,7 @@ def userTasks(request):
                 except:
                     code = '404'
             return HttpResponse(json.dumps(
-                {'code': code, 'msg': "修改成功", 'id': id, 'msg1': msg, 'follow': isFollow, 'name': user_name,
-                 'isHave': existList}), content_type="application/json")
+                {'code': code, 'msg': "修改成功", 'myAnswer': myAnswerUri}), content_type="application/json")
 
 
 # 保存图片
@@ -393,22 +439,75 @@ def saveTasks(request):
             image = request.POST.get('image')
             tag = request.POST.get('tag')
             taskId = randomId()
+            answer = request.POST.get('answer')
+            user = User.objects.filter(username = username).first()
+            answerUri = ''
+            if answer != "" :
+                if user.occupation == '教师' or user.occupation != '学生':
+                    answerUri = uploadImg('tasks', answer,'jiaoshi_task_' + str(taskId) + '_answer_img_by_tm' + '.jpeg')
+                    list_1 = []
+                    if user.tasks_collect:
+                        for item in user.tasks_collect:
+                            dict_1 = {}
+                            if item['taskId'] == taskId:
+                                dict_1["taskId"] = taskId
+                                dict_1['msg'] = item['msg']
+                                list_1.append(dict_1)
+                            else:
+                                list_1.append(item)
+                    User.objects(username = username).update(tasks_collect = list_1)
+                else:
+                    myUri = uploadImg('tasks', answer, username + '_task_' + str(taskId) + '_answer.jpeg')
+                    list_collect = []
+                    if user.tasks_collect:
+                        list_collect.append({"taskId": taskId, "msg": "", 'myAnswer': myUri})
+                        for itemDict in user.tasks_collect:
+                            list_collect.append(itemDict)
+                    else:
+                        list_collect.append({"taskId": taskId, "msg": "",'myAnswer':myUri})
+                    User.objects(username=username).update(tasks_collect = list_collect)
+
             if image == "null":
                 if tag == "true":
-                    tasks = Tasks(taskId=taskId, byId=username, context=content)
+                    tasks = Tasks(taskId=taskId, byId=username, context=content, answerImg = answerUri)
                     tasks.save()
                 else:
-                    tasks = Tasks(taskId=taskId, byId=username + '_false', context=content)
+                    tasks = Tasks(taskId=taskId, byId=username + '_false', context=content, answerImg = answerUri)
                     tasks.save()
             else:
                 url = uploadImg("tasks", image, 'tasktImage_by_' + username + "_" + str(int(time.time())) + '.jpeg')
                 if tag == "true":
-                    tasks = Tasks(taskId=taskId, byId=username, context=content, contextImg=url)
+                    tasks = Tasks(taskId=taskId, byId=username, context=content, contextImg=url, answerImg = answerUri)
                     tasks.save()
                 else:
-                    tasks = Tasks(taskId=taskId, byId=username + '_false', context=content, contextImg=url)
+                    tasks = Tasks(taskId=taskId, byId=username + '_false', context=content, contextImg=url, answerImg = answerUri)
                     tasks.save()
-            return HttpResponse(json.dumps({'msg': '保存成功'}))
+            return HttpResponse(json.dumps({'msg': '保存成功','contextImg':tasks.contextImg,'taskId':tasks.taskId,"answer":tasks.answerImg,'occupation':user.occupation}))
+        if action == 'ReceivedSave':
+            taskId = request.POST.get("taskId")
+            answer = request.POST.get("answer")
+            user = User.objects.filter(username = username).first()
+            if user.occupation == '教师':
+                answerURI = uploadImg('tasks', answer,'jiaoshi_task_' + str(taskId) + '_answer_img_by_tm' + '.jpeg')
+                Tasks.objects(taskId = taskId).update(answerImg = answerURI)
+                return HttpResponse(json.dumps({'msg': '保存成功',"answer": answerURI,'occupation': user.occupation,"myAnswer":""}))
+            else:
+                myAnswer = uploadImg('tasks', answer, username + '_task_' + str(taskId) + '_answer.jpeg')
+                list_collect = []
+                if user.tasks_collect:
+                    for item in user.tasks_collect:
+                        itemDict = {}
+                        if item['taskId'] == taskId:
+                            itemDict['taskId'] = taskId
+                            itemDict['msg'] = item['msg']
+                            itemDict["myAnswer"] = myAnswer
+                            list_collect.append(itemDict)
+                        else:
+                            list_collect.append(item)
+                else:
+                    list_collect.append({"taskId":taskId,"msg":"","myAnswer":myAnswer})
+                User.objects(username = username).update(tasks_collect = list_collect)
+                return HttpResponse(json.dumps({'msg': '保存成功', "answer": "", 'occupation': user.occupation, "myAnswer": myAnswer}))
 
 def newFriend(request):
     username = request.POST.get("username")

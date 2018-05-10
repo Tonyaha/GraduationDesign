@@ -71,6 +71,9 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
     public static ArrayList<JSONObject> contactData = new ArrayList<>();
     public static ArrayList<JSONObject> collectData = new ArrayList<>();
     public static ArrayList<JSONObject> allTasksData = new ArrayList<>();
+    public static boolean updateFlag = false;
+    public static boolean updateContactFlag = false;
+    public static boolean updateCollectFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +85,8 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
         getFriendList(); //好友列表
         queryFriend();
         collectRequest(); //习题列表
-        tasksRequest(); //全部习题
+        tasksRequest();
+
 
 
         fragments = new ArrayList<>();
@@ -389,10 +393,12 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     String code = jsonObject.getString("code");
                     if ("200".equals(code)) {
+                        Constant.occupation = jsonObject.getString("occupation");
                         try {
                             JSONArray jsonArray = jsonObject.getJSONArray("list");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jb = jsonArray.getJSONObject(i);
+                                //Log.e("aaa",jb.getString("context"));
                                 collectData.add(jb);
                             }
                         } catch (JSONException e) {
@@ -417,8 +423,8 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
         });
     }
 
-    //全部习题
-    private void tasksRequest() {
+    public void tasksRequest() {
+        HashMap<String, Object> map = new HashMap<>();
         Constant constant = new Constant();
         RetrofitBuilder builder = new RetrofitBuilder(constant.BaseUrl + "/api/userCollect/");
         builder.isConnected(this);
@@ -431,8 +437,6 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    //Log.e("yyyyy",response.body().string());
-                    //System.out.println("////////////" + response.body().string());
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     String code = jsonObject.getString("code");
                     if ("200".equals(code)) {
@@ -445,6 +449,8 @@ public class MainActivity extends FragmentActivity implements RongIM.UserInfoPro
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        //Log.e("调试", String.valueOf(data_1));
+                        Toast.makeText(MainActivity.this,"数据请求成功",Toast.LENGTH_LONG).show();
                     } else if ("404".equals(code)) {
                         Log.e("CollectFragment", jsonObject.getString("msg"));
                     }

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tm.book_of_exercises.MainActivity;
 import com.tm.book_of_exercises.R;
 import com.tm.book_of_exercises.adapter.CollectAdapter;
 import com.tm.book_of_exercises.constant.Constant;
@@ -181,6 +182,9 @@ public class MeFragment extends Fragment {
                 case R.id.exit_account:
                     Intent intent1 = new Intent(getActivity(), UserLogin.class);
                     startActivity(intent1);
+                    MainActivity.updateCollectFlag = true;
+                    MainActivity.updateContactFlag = true;
+                    MainActivity.updateFlag = false;
                     break;
                 case R.id.all_tasks:
                     Intent intent2 = new Intent(getActivity(), TasksActivity.class);

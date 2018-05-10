@@ -50,57 +50,59 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if(Constant.showSelectFlag){
-            holder.select.setVisibility(View.VISIBLE);
-        }else {
-            holder.select.setVisibility(View.GONE);
-        }
-        // 绑定数据
-        JSONObject jsonObject = mData.get(position);
-        try {
-            if("null".equals(jsonObject.getString("remark"))){
-                holder.mTv.setText(jsonObject.getString("nickname"));
+        if(!"".equals(mData) || !"null".equals(mData) || mData != null){
+            if(Constant.showSelectFlag){
+                holder.select.setVisibility(View.VISIBLE);
             }else {
-                holder.mTv.setText(jsonObject.getString("remark"));
+                holder.select.setVisibility(View.GONE);
             }
-            Glide.with(context)
-                    .load(jsonObject.getString("icon"))
-                    .into(holder.img);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            // 绑定数据
+            JSONObject jsonObject = mData.get(position);
+            try {
+                if("null".equals(jsonObject.getString("remark"))){
+                    holder.mTv.setText(jsonObject.getString("nickname"));
+                }else {
+                    holder.mTv.setText(jsonObject.getString("remark"));
+                }
+                Glide.with(context)
+                        .load(jsonObject.getString("icon"))
+                        .into(holder.img);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //holder.img.setText(mData.get(position));
+            holder.select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onItemClickListener != null) {
+                        int pos = holder.getLayoutPosition();
+                        onItemClickListener.onItemClick(holder.select, pos);
+                    }
+                }
+            });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    if(onItemClickListener != null) {
+                        int pos = holder.getLayoutPosition();
+                        onItemClickListener.onItemClick(holder.itemView, pos);
+                    }
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if(onItemClickListener != null) {
+                        int pos = holder.getLayoutPosition();
+                        onItemClickListener.onItemLongClick(holder.itemView, mData);
+                    }
+                    //表示此事件已经消费，不会触发单击事件
+                    return true;
+                }
+            });
         }
-        //holder.img.setText(mData.get(position));
-        holder.select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onItemClickListener != null) {
-                    int pos = holder.getLayoutPosition();
-                    onItemClickListener.onItemClick(holder.select, pos);
-                }
-            }
-        });
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if(onItemClickListener != null) {
-                    int pos = holder.getLayoutPosition();
-                    onItemClickListener.onItemClick(holder.itemView, pos);
-                }
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if(onItemClickListener != null) {
-                    int pos = holder.getLayoutPosition();
-                    onItemClickListener.onItemLongClick(holder.itemView, mData);
-                }
-                //表示此事件已经消费，不会触发单击事件
-                return true;
-            }
-        });
     }
 
     @Override
